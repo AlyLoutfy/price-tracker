@@ -48,9 +48,8 @@ async function withRetry(
 /**
  * Fetch a URL's raw HTML from the site itself.
  *
- * This is the only transport. It costs nothing, has no quota to exhaust and no key to expire, and
- * always reflects the live page. It works because the sites we watch server-render their listings
- * into the initial HTML — so there is nothing for a headless browser to add.
+ * The inexpensive first attempt for listing pages. If the site requires JavaScript or rejects the
+ * request, the listing collector falls back to an isolated browser and validates its response.
  */
 export function fetchDirect(url: string, options: FetchOptions = {}): Promise<string> {
   return withRetry(

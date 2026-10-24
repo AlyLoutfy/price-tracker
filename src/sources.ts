@@ -1,5 +1,6 @@
 import type { Listing, ParsedPage } from './types';
 import { fetchDirect } from './fetchers';
+import { fetchBrowser } from './browser';
 import { dubizzlePageUrl, parseDubizzle } from './parsers/dubizzle';
 
 interface SiteAdapter {
@@ -17,8 +18,8 @@ interface SiteAdapter {
 // Keyed by hostname (without "www."). To support another site, add a parser under src/parsers/
 // and register it here.
 const ADAPTERS: Record<string, SiteAdapter> = {
-  // Dubizzle (formerly OLX Egypt) server-renders every ad on the page — with its description — into
-  // the initial HTML, so a plain request returns everything a headless browser would.
+  // Dubizzle embeds listing data in its initial HTML, but may require a JavaScript challenge
+  // before serving it. The browser fallback keeps that original response intact.
   'dubizzle.com.eg': {
     name: 'Dubizzle',
     pageMarker: 'dubizzle.com.eg',
@@ -83,8 +84,19 @@ export async function collectListings(url: string): Promise<Listing[]> {
   let totalPages = 1;
   for (let page = 1; page <= Math.min(totalPages, MAX_PAGES); page += 1) {
     const pageUrl = site.pageUrl(url, page);
-    const content = await fetchDirect(pageUrl, { timeoutMs: site.timeoutMs });
-    assertResultsPage(site, content);
+    const validate = (html: string): void => {
+      assertResultsPage(site, html);
+      // A 200 response containing only challenge scripts must never become an empty search.
+      site.parse(html, url);
+    };
+    let content: string;
+    try {
+      content = await fetchDirect(pageUrl, { timeoutMs: site.timeoutMs, retries: 0 });
+      validate(content);
+    } catch (error) {
+      console.warn(`↪ ${site.name}: direct fetch unavailable (${(error as Error).message}); trying browser`);
+      content = await fetchBrowser(pageUrl, validate, site.timeoutMs);
+    }
     const parsed = site.parse(content, url);
     if (page === 1) totalPages = parsed.totalPages;
     // A promoted ad can appear on several pages; the first sighting wins.

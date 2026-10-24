@@ -11,6 +11,36 @@ const read = (name: string): string => readFileSync(resolve(fixtures, name), 'ut
 const LEON_SEARCH_URL =
   'https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021';
 
+describe('parseDubizzle — recovered SEAT Leon results', () => {
+  it('preserves all seven live listing prices, years and mileage from the original response', () => {
+    const { listings, totalPages } = parseDubizzle(read('dubizzle-leon.html'), LEON_SEARCH_URL);
+    expect(totalPages).toBe(1);
+    expect(listings).toHaveLength(7);
+    expect(listings[0]).toMatchObject({
+      key: 'dubizzle:209303617', priceEgp: 1475000,
+      attributes: { Year: '2026', Kilometers: '14000' },
+    });
+    expect(applyFilters(listings, {
+      id: 'leon', label: 'SEAT Leon', url: LEON_SEARCH_URL,
+      filters: { priceMin: 900000, priceMax: 1510000 },
+    })).toHaveLength(7);
+  });
+
+  it('rejects a JavaScript challenge that returns HTTP 200 and no actual result data', () => {
+    const challenge = '<html><head><script src="https://www.dubizzle.com.eg/.humbucker/clients/browser.js"></script></head><body><script>challenge()</script></body></html>';
+    expect(() => parseDubizzle(challenge, LEON_SEARCH_URL)).toThrow(/no listing data/);
+  });
+
+  it('accepts an explicitly empty app-state search or JSON-LD ItemList', () => {
+    expect(parseDubizzle('<script>window.state = {"algolia":{"content":{"hits":[],"nbHits":0,"nbPages":0}}};</script>').listings).toEqual([]);
+    expect(parseDubizzle('<script type="application/ld+json">{"@type":"ItemList","numberOfItems":0}</script>').listings).toEqual([]);
+  });
+
+  it('rejects a missing result set when the page claims there are matching ads', () => {
+    expect(() => parseDubizzle('<script>window.state = {"algolia":{"content":{"hits":[],"nbHits":7,"nbPages":1}}};</script>')).toThrow(/no listing data/);
+  });
+});
+
 describe('parseDubizzle — from the app state (window.state)', () => {
   const { listings, totalPages } = parseDubizzle(read('dubizzle-phones.html'));
   const byKey = (key: string) => listings.find((listing) => listing.key === key);

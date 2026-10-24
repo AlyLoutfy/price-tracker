@@ -52,6 +52,7 @@ function structuredTitle(parts: ReadonlyArray<string | undefined>): string | und
 interface AppState {
   readonly listings: Map<string, Listing>;
   readonly totalPages?: number;
+  readonly explicitlyEmpty: boolean;
 }
 
 function listingFromHit(hit: Json): Listing | undefined {
@@ -99,7 +100,10 @@ function parseAppState(html: string): AppState {
 
   const totalPages = Number(content?.nbPages);
   const known = Number.isInteger(totalPages) && totalPages > 0;
-  return { listings, totalPages: known ? totalPages : undefined };
+  return {
+    listings, totalPages: known ? totalPages : undefined,
+    explicitlyEmpty: Array.isArray(content?.hits) && content.hits.length === 0 && content.nbHits === 0,
+  };
 }
 
 // ── Layer 2: JSON-LD ───────────────────────────────────────────────────────────────────────────
@@ -220,6 +224,10 @@ export function parseDubizzle(html: string, sourceUrl?: string): ParsedPage {
       attributes: {},
       sellerId: null,
     });
+  }
+
+  if (byKey.size === 0 && !app.explicitlyEmpty && structured.numberOfItems !== 0) {
+    throw new Error('Dubizzle: no listing data or explicit zero-result count — challenge or changed page');
   }
 
   // Page count: straight from the app state, else estimated from the JSON-LD total and how many ads

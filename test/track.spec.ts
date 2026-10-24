@@ -160,9 +160,12 @@ describe('failureReason', () => {
     expect(failureReason([outcome({ sent: 2 }), outcome({})])).toBeUndefined();
   });
 
-  it('passes when only some links or sends failed — those are retried next run', () => {
-    expect(failureReason([outcome({ kind: 'failed' }), outcome({})])).toBeUndefined();
+  it('passes when only some messages failed — those are retried next run', () => {
     expect(failureReason([outcome({ sent: 1, sendFailures: 1 })])).toBeUndefined();
+  });
+
+  it('reports an unreadable search even when another site succeeded', () => {
+    expect(failureReason([outcome({ kind: 'failed' }), outcome({})])).toMatch(/tracked links could not be read/);
   });
 
   it('fails when no link could be read', () => {

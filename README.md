@@ -10,7 +10,6 @@ Currently tracking:
 | Tracker | Link | Extra rules |
 |---------|------|-------------|
 | SEAT Leon · 2021+ | [used Seat Leon, year ≥ 2021](https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021) | price 900k–1.51M EGP |
-| iPhone 17 · used | [used iPhone 17](https://www.dubizzle.com.eg/en/mobile-phones-tablets-accessories-numbers/mobile-phones/q-used-iphone-17/) | battery above 95%; 18,000 EGP tax added to phones that still owe it |
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
@@ -36,8 +35,10 @@ GitHub Actions cron (hourly)
 
 - **Any Dubizzle search works: cars, phones, anything.** Filter the search on the site, copy the
   URL, and add it to [`config/trackers.json`](config/trackers.json). The page embeds every ad
-  in full (price, the seller's description, structured fields like year, mileage or storage), so a
-  plain request returns everything and there's no API key or paid proxy involved.
+  with prices and structured fields like year and mileage. A direct request is tried first; if
+  Dubizzle serves a JavaScript challenge or HTTP 503, Chromium loads the page in an isolated
+  session. No API key or paid proxy is involved. The original document response is parsed because
+  Dubizzle removes the embedded app state from the DOM after hydration.
 - **You hear about the current market once.** When a link is first added (or edited), you get a
   single digest message: how many ads match right now and the best-value ones. After that you get
   one message per new ad.
@@ -54,9 +55,10 @@ GitHub Actions cron (hourly)
 - **No spam on breakage.** A failed fetch or a bot-challenge page is detected and skipped (state
   untouched, retried next run) instead of being mistaken for "zero ads". If a whole page suddenly
   looks new (state loss, a parser recovering after a site redesign), it's re-recorded silently.
-- **Loud on a real outage.** If no link can be read, or every Telegram message fails (a revoked bot
-  token, say), the run fails, and GitHub emails you. A single failed link or message is only logged
-  and retried next hour.
+- **Loud on a real outage.** If any tracked link remains unreadable after the browser fallback,
+  or every Telegram message fails, the run fails and GitHub can notify you. Successful alerts and
+  their state are still saved, and every tracker is retried next hour. ASICS success cannot hide a
+  failed Dubizzle search. Individual failed messages are also retried.
 
 ## ASICS discount alerts
 
@@ -77,34 +79,6 @@ API secret, browser installation or paid subscription is needed. Guest tokens li
   not included. The initial full price is explicit in configuration, so a first-fetch error cannot
   silently establish a wrong baseline.
 
-## Reading the ad text: tax and battery
-
-Sellers state some facts only in the free-text description: whether Egyptian customs tax is still
-owed on an imported phone, and the battery health. `src/signals.ts` reads both from Egyptian Arabic,
-English, or a mix. It normalises Arabic-Indic digits, letter variants (ة/ه, ى/ي, أ/ا) and the
-invisible direction marks phone keyboards insert. Then it matches the ways sellers actually phrase
-these things, including negation:
-
-| Ad says | Read as |
-|---------|---------|
-| عليه ضريبه · مش مدفوع ضريبه · ضريبه ١٨ الف · فتره السماح · هيقف ضريبه · تدفع بعد شهرين · tax due | tax **owed** |
-| معفي ضريبه · مدفوع الضريبه · خالص ضريبة · زيرو ضريبه · معليهوش جنيه ضريبة · tax paid | tax **paid / exempt** |
-| بطاريه ٩٨ · Battery Health: 97% · Bt:100% · 100 B | battery **98 / 97 / 100%** |
-
-What happens with each result:
-
-- **Tax owed**: the phone is kept, and `phoneTaxEgp` (18,000) is added to its price. It's judged on
-  what it will actually cost you: "44,000 EGP + 18,000 EGP tax = **62,000 EGP**".
-- **Tax not mentioned**: kept. The alert shows both prices ("58,000 EGP (76,000 EGP if tax is
-  owed)") and a deal verdict for each case.
-- **Battery below the minimum**: dropped, but only when the number is tied to the word battery. A
-  bare "90%" might describe the phone's condition, so it never drops an ad.
-- **Battery not mentioned**: kept, flagged ❓.
-
-Anything the rules don't recognise comes back as "not mentioned", so a misread costs you one extra
-message and never hides a phone. The rules were checked against every live iPhone 17 ad on
-Dubizzle (116 ads, Sept 2026), and the test suite pins the phrasings they cover.
-
 ## The market comparison
 
 - **Peers.** Each alert compares the ad's total cost with every other ad that passed the same
@@ -124,8 +98,10 @@ year count as peers. Check the mileage in the alert.
 ```bash
 nvm use            # Node 20+
 npm install
+npx playwright install --with-deps --no-shell chromium
 npm run dry-run    # fetches the live links and prints what WOULD be sent — sends nothing
 npm test           # unit + parser tests (offline, uses captured fixtures)
+npm run test:browser # real Chromium tests against a local challenge server
 npm run telegram:test # sends one connection test using the configured bot
 ```
 
@@ -161,20 +137,15 @@ Add a Dubizzle search to [`config/trackers.json`](config/trackers.json):
 
 ```jsonc
 {
-  "id": "iphone-17",                 // unique and stable: the key its seen-state is stored under
-  "label": "iPhone 17 · used",       // shown in every message
-  "url": "https://www.dubizzle.com.eg/en/.../q-used-iphone-17/",
-
-  // Everything below is optional.
+  "id": "seat-leon-2021",            // unique, stable key for saved history
+  "label": "SEAT Leon · 2021+",       // shown in alerts
+  "url": "https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021",
   "filters": {
-    "priceMin": 20000,               // bounds on the total cost (price + tax owed)
-    "priceMax": 70000,
-    "titleMustInclude": ["17"],      // each keyword must appear in the title or description
-    "minBatteryHealth": 96           // drop ads that state a lower battery health
+    "priceMin": 900000,
+    "priceMax": 1510000
   },
-  "phoneTaxEgp": 18000,              // read the ad for customs tax; add this when it's owed
-  "details": ["Storage"],            // ad fields to show in alerts ("Kilometers", "Year", …)
-  "compareBy": ["Storage"]           // compare prices only among ads sharing these fields
+  "details": ["Kilometers"],
+  "compareBy": ["Year"]
 }
 ```
 
@@ -207,19 +178,17 @@ Editing a product URL or reference price resets its sale comparison.
 
 - **Supported sites.** Dubizzle Egypt searches and ASICS France product links. Other sites and
   ASICS locales are rejected at startup.
-- **Current Dubizzle availability.** Recent scheduled runs on 24 October 2026 returned HTTP 503
-  for both searches. Those trackers remain configured and retry hourly; their last seen history
-  is preserved. ASICS checks run independently, so a Dubizzle outage does not stop discount alerts.
+- **Dubizzle challenges.** HTTP 503 or a challenge-only HTTP 200 triggers the browser fallback.
+  A page is accepted only when it contains actual listing data or explicitly reports zero results.
+  An unfinished challenge leaves the previous seen history intact.
 - **Scraping is inherently brittle.** The parser reads three independent copies of the result set
   (the page's app state, its schema.org JSON-LD, and its analytics ad-id arrays), so one of them
   changing shape degrades gracefully. The description only comes from the app state, though: if it
   disappears, the tax/battery checks see "not mentioned" and every phone is sent. Run
   `npm run dry-run` to see what each link currently returns.
-- **The text rules are rules.** A new way of phrasing tax status won't be recognised until it's
-  added to `src/signals.ts` (with a test in `test/signals.spec.ts`). Until then it reads as "not
-  mentioned", so you still get the ad.
-- **A site can start blocking us.** Fetches go straight to Dubizzle, so a Cloudflare challenge or an
-  outage shows up as a warning and that link is skipped for the run. The next run retries.
+- **A site can start blocking us.** Browser loading can also fail if Dubizzle changes its checks
+  or has an outage. An unreadable link fails the job after the other trackers have been checked;
+  it is retried next hour without losing history.
 - **GitHub cron caveats.** Scheduled runs can be delayed under load, and GitHub auto-disables
   schedules after ~60 days of no repo activity (the state commits keep it active).
 
@@ -236,6 +205,7 @@ src/
   track.ts               one link per run: fetch → filter → reconcile → notify → record what's handled
   sources.ts             site registry; fetches every result page; rejects broken/challenge pages
   fetchers.ts            direct page fetch with retry/backoff
+  browser.ts             isolated Chromium fallback; preserves the original document response
   parsers/dubizzle.ts    app state + JSON-LD + ad-id arrays → listings
   signals.ts             reads tax status and battery health out of ad descriptions
   filters.ts             price / keyword / battery filters; adds tax owed to the total cost

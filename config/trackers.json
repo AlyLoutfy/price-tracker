@@ -15,22 +15,6 @@
     ]
   },
   {
-    "id": "iphone-17",
-    "label": "iPhone 17 · used · battery above 95%",
-    "url": "https://www.dubizzle.com.eg/en/mobile-phones-tablets-accessories-numbers/mobile-phones/q-used-iphone-17/",
-    "phoneTaxEgp": 18000,
-    "filters": {
-      "priceMin": 20000,
-      "minBatteryHealth": 96
-    },
-    "details": [
-      "Storage"
-    ],
-    "compareBy": [
-      "Storage"
-    ]
-  },
-  {
     "id": "asics-gel-venture-6",
     "label": "ASICS GEL-VENTURE 6 · Black/Black · EU 42.5 · Standard",
     "mode": "discount",

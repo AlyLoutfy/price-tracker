@@ -43,6 +43,14 @@ jobs:
 
       - run: npm run typecheck && npm test
 
+      - name: Install Chromium for Dubizzle
+        if: ${{ !inputs.test_telegram }}
+        run: npx playwright install --with-deps --no-shell chromium
+
+      - name: Verify browser challenge handling
+        if: ${{ !inputs.test_telegram }}
+        run: npm run test:browser
+
       - name: Send Telegram test
         if: ${{ inputs.test_telegram }}
         env:

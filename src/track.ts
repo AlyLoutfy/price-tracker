@@ -140,6 +140,9 @@ export function failureReason(outcomes: readonly TrackOutcome[]): string | undef
   if (outcomes.length > 0 && outcomes.every((outcome) => outcome.kind === 'failed')) {
     return 'no tracked link could be read — the site may be blocking requests or have changed';
   }
+  if (outcomes.some((outcome) => outcome.kind === 'failed')) {
+    return 'one or more tracked links could not be read — see warnings; successfully handled alerts and state were preserved';
+  }
   const attempted = outcomes.reduce((sum, outcome) => sum + outcome.sent + outcome.sendFailures, 0);
   const failed = outcomes.reduce((sum, outcome) => sum + outcome.sendFailures, 0);
   if (failed > 0 && failed === attempted) {
