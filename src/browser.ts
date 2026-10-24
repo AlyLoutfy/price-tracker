@@ -11,7 +11,9 @@ export async function fetchBrowser(
   timeoutMs = 70_000,
 ): Promise<string> {
   const target = new URL(url);
-  const browser = await chromium.launch({ channel: 'chromium', timeout: 30_000 });
+  const browser = await chromium.launch({
+    channel: 'chromium', headless: process.env.BROWSER_HEADLESS !== '0', timeout: 30_000,
+  });
   try {
     const context = await browser.newContext({
       locale: 'en-US',
@@ -27,7 +29,12 @@ export async function fetchBrowser(
           [...target.searchParams].some(([key, value]) => received.searchParams.get(key) !== value)) {
         return false;
       }
-      if (!response.ok()) { lastFailure = `HTTP ${response.status()}`; return false; }
+      if (!response.ok()) {
+        const body = await response.text().catch(() => '');
+        const title = body.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim().slice(0, 100);
+        lastFailure = `HTTP ${response.status()}${title ? ` (${title})` : ''}`;
+        return false;
+      }
       try {
         validate(await response.text());
         return true;

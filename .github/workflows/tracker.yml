@@ -63,7 +63,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        run: npm start
+          BROWSER_HEADLESS: '0'
+        run: xvfb-run --auto-servernum npm start
 
       - name: Persist seen state
         # Also after a failed run: alerts already delivered before the failure are recorded in the
