@@ -1,6 +1,7 @@
 [
   {
     "id": "seat-leon-2021",
+    "enabled": false,
     "label": "SEAT Leon · 2021+ · 900k–1.51M EGP",
     "url": "https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021",
     "filters": {

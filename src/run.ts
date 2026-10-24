@@ -13,9 +13,14 @@ const STATE_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'state
 
 async function main(): Promise<void> {
   const env = loadEnv();
-  const trackers = loadTrackers();
+  const configuredTrackers = loadTrackers();
+  const trackers = configuredTrackers.filter((tracker) => tracker.enabled !== false);
   const state = loadState(STATE_PATH);
-  pruneState(state, new Set(trackers.map((tracker) => tracker.id)));
+  // Paused watches retain their history so re-enabling one cannot resend old ads.
+  pruneState(state, new Set(configuredTrackers.map((tracker) => tracker.id)));
+  for (const tracker of configuredTrackers) {
+    if (tracker.enabled === false) console.log(`⏸ ${tracker.id}: disabled; history preserved`);
+  }
 
   const deps: TrackDeps = {
     collect: collectListings,

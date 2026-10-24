@@ -9,13 +9,19 @@ Currently tracking:
 
 | Tracker | Link | Extra rules |
 |---------|------|-------------|
-| SEAT Leon · 2021+ | [used Seat Leon, year ≥ 2021](https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021) | price 900k–1.51M EGP |
+| SEAT Leon · 2021+ — paused | [used Seat Leon, year ≥ 2021](https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021) | 900k–1.51M EGP; automated checks disabled pending permission from Dubizzle |
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
 ASICS France. Each colour/size/width combination is checked separately.
+
+The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
+[Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
+prohibit automated scraping (section 4) and restrict data extraction without permission
+(section 7). Do not re-enable automated Dubizzle access without appropriate authorization.
+The experimental backend credential was not deployed or saved in GitHub Actions.
 
 ## Dubizzle listing alerts
 

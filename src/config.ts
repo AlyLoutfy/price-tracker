@@ -11,6 +11,7 @@ const trackerSchema = z
     id: z.string().min(1),
     label: z.string().min(1),
     url: z.string().url(),
+    enabled: z.boolean().optional(),
     mode: z.enum(['listings', 'discount']).optional(),
     referencePrice: z.number().positive().optional(),
     filters: z

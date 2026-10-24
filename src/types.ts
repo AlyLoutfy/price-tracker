@@ -37,6 +37,8 @@ export interface TrackerConfig {
   readonly id: string;
   readonly label: string;
   readonly url: string;
+  /** A disabled watch keeps its history but makes no requests or sends. */
+  readonly enabled?: boolean;
   /** Omitted for Dubizzle searches; discount watches the exact ASICS product variant. */
   readonly mode?: 'listings' | 'discount';
   /** Starting full price, in EUR, for a discount tracker. */
