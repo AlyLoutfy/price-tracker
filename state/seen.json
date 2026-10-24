@@ -240,5 +240,44 @@
       "dubizzle:209100052": "d5a82a89641b|256 GB|63000",
       "dubizzle:209099814": "0ac79c5bd1ae|256 GB|69000"
     }
+  },
+  "asics-gel-venture-6": {
+    "url": "https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard",
+    "keys": [
+      "asics:1203A297-002:4550457173490"
+    ],
+    "product": {
+      "price": 100,
+      "referencePrice": 100,
+      "currency": "EUR",
+      "inStock": true,
+      "checkedAt": "2026-10-24T11:16:32.403Z"
+    }
+  },
+  "asics-gel-challenger-15-clay": {
+    "url": "https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard",
+    "keys": [
+      "asics:1041A508-250:4571633891359"
+    ],
+    "product": {
+      "price": 120,
+      "referencePrice": 120,
+      "currency": "EUR",
+      "inStock": true,
+      "checkedAt": "2026-10-24T11:16:32.741Z"
+    }
+  },
+  "asics-gel-excite-11": {
+    "url": "https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard",
+    "keys": [
+      "asics:1011C080-404:4571633744402"
+    ],
+    "product": {
+      "price": 90,
+      "referencePrice": 90,
+      "currency": "EUR",
+      "inStock": true,
+      "checkedAt": "2026-10-24T11:16:33.019Z"
+    }
   }
 }
