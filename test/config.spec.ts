@@ -34,4 +34,13 @@ describe('loadTrackers', () => {
   it('rejects duplicate ids, which would share one seen-state entry', () => {
     expect(() => loadTrackers(configFile([tracker, tracker]))).toThrow(/unique/);
   });
+
+  it('requires discount mode, an exact ASICS variant and a reference price', () => {
+    const shoe = { id: 'shoe', label: 'Shoe', mode: 'discount', referencePrice: 100,
+      url: 'https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard' };
+    expect(loadTrackers(configFile([shoe]))).toHaveLength(1);
+    expect(() => loadTrackers(configFile([{ ...shoe, referencePrice: undefined }]))).toThrow(/referencePrice/);
+    expect(() => loadTrackers(configFile([{ ...shoe, url: tracker.url }]))).toThrow(/ASICS/);
+    expect(() => loadTrackers(configFile([{ ...shoe, filters: { priceMin: 10 } }]))).toThrow(/listing filters/);
+  });
 });

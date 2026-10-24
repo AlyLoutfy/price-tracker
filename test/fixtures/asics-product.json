@@ -1,0 +1,381 @@
+{
+  "id": "1203A297-002",
+  "name": "GEL-VENTURE 6",
+  "currency": "EUR",
+  "price": 100.0,
+  "variationValues": {
+    "color": "1203A297.002"
+  },
+  "variationAttributes": [
+    {
+      "id": "color",
+      "name": "Couleur",
+      "values": [
+        {
+          "name": "Clay Grey/Cream",
+          "orderable": true,
+          "value": "1203A297.022"
+        },
+        {
+          "name": "Glacier Grey/Pure Silver",
+          "orderable": true,
+          "value": "1203A297.020"
+        },
+        {
+          "name": "Carbon/Black",
+          "orderable": false,
+          "value": "1203A297.021"
+        },
+        {
+          "name": "Black/Black",
+          "orderable": false,
+          "value": "1203A297.001"
+        },
+        {
+          "name": "Graphite Grey/Graphite Grey",
+          "orderable": false,
+          "value": "1203A297.023"
+        },
+        {
+          "name": "Cream/Cream",
+          "orderable": true,
+          "value": "1203A297.101"
+        },
+        {
+          "name": "Pepper/Black",
+          "orderable": false,
+          "value": "1203A297.200"
+        },
+        {
+          "name": "Black/Black",
+          "orderable": true,
+          "value": "1203A297.002"
+        },
+        {
+          "name": "White/White",
+          "orderable": false,
+          "value": "1203A297.100"
+        }
+      ]
+    },
+    {
+      "id": "width",
+      "name": "Largeur",
+      "values": [
+        {
+          "name": "Standard",
+          "orderable": true,
+          "value": "Standard"
+        }
+      ]
+    },
+    {
+      "id": "size",
+      "name": "Taille",
+      "values": [
+        {
+          "name": "36",
+          "orderable": false,
+          "value": "4"
+        },
+        {
+          "name": "37",
+          "orderable": false,
+          "value": "4.5"
+        },
+        {
+          "name": "37.5",
+          "orderable": false,
+          "value": "5"
+        },
+        {
+          "name": "38",
+          "orderable": true,
+          "value": "5.5"
+        },
+        {
+          "name": "39",
+          "orderable": false,
+          "value": "6"
+        },
+        {
+          "name": "39.5",
+          "orderable": false,
+          "value": "6.5"
+        },
+        {
+          "name": "40",
+          "orderable": false,
+          "value": "7"
+        },
+        {
+          "name": "40.5",
+          "orderable": false,
+          "value": "7.5"
+        },
+        {
+          "name": "41.5",
+          "orderable": false,
+          "value": "8"
+        },
+        {
+          "name": "42",
+          "orderable": true,
+          "value": "8.5"
+        },
+        {
+          "name": "42.5",
+          "orderable": true,
+          "value": "9"
+        },
+        {
+          "name": "43.5",
+          "orderable": true,
+          "value": "9.5"
+        },
+        {
+          "name": "44",
+          "orderable": true,
+          "value": "10"
+        },
+        {
+          "name": "44.5",
+          "orderable": false,
+          "value": "10.5"
+        },
+        {
+          "name": "45",
+          "orderable": false,
+          "value": "11"
+        },
+        {
+          "name": "46",
+          "orderable": false,
+          "value": "11.5"
+        },
+        {
+          "name": "46.5",
+          "orderable": true,
+          "value": "12"
+        },
+        {
+          "name": "47",
+          "orderable": false,
+          "value": "12.5"
+        },
+        {
+          "name": "48",
+          "orderable": true,
+          "value": "13"
+        },
+        {
+          "name": "49",
+          "orderable": true,
+          "value": "14"
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173377",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "4.5"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173384",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "13"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173391",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "4"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173407",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "10"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173414",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "7.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173421",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "5"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173438",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "14"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173445",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "8.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173452",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "12.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173469",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "11.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173476",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "7"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173483",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "12"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173490",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "9"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173506",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "10.5"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173513",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "9.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173520",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "11"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173537",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "6.5"
+      }
+    },
+    {
+      "orderable": true,
+      "price": 100.0,
+      "productId": "4550457173544",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "5.5"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173551",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "8"
+      }
+    },
+    {
+      "orderable": false,
+      "price": 100.0,
+      "productId": "4550457173568",
+      "variationValues": {
+        "color": "1203A297.002",
+        "width": "Standard",
+        "size": "6"
+      }
+    }
+  ]
+}

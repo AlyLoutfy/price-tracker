@@ -37,6 +37,10 @@ export interface TrackerConfig {
   readonly id: string;
   readonly label: string;
   readonly url: string;
+  /** Omitted for Dubizzle searches; discount watches the exact ASICS product variant. */
+  readonly mode?: 'listings' | 'discount';
+  /** Starting full price, in EUR, for a discount tracker. */
+  readonly referencePrice?: number;
   readonly filters?: TrackerFilters;
   /**
    * Egyptian customs tax on an imported phone. When set, each ad is read for whether the tax is

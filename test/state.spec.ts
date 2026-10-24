@@ -8,6 +8,7 @@ import {
   loadState,
   mergeSeen,
   pruneState,
+  saveState,
   setSeen,
   type SeenState,
 } from '../src/state';
@@ -52,6 +53,19 @@ describe('getOffers / setSeen offers', () => {
 });
 
 describe('loadState', () => {
+  it('round-trips product prices and delivery state alongside existing listing history', () => {
+    const path = join(mkdtempSync(join(tmpdir(), 'seen-')), 'seen.json');
+    const state: SeenState = {
+      iphone: { url: URL_B, keys: ['dubizzle:2'] },
+      shoe: { url: 'https://www.asics.com/', keys: ['asics:1'], product: {
+        price: 80, referencePrice: 100, currency: 'EUR', inStock: true,
+        checkedAt: '2026-10-24T12:00:00Z', alertedPrice: 80,
+      } },
+    };
+    saveState(path, state);
+    expect(loadState(path)).toEqual(state);
+  });
+
   it('drops entries in the old per-site shape instead of mis-reading them', () => {
     const path = join(mkdtempSync(join(tmpdir(), 'seen-')), 'seen.json');
     writeFileSync(

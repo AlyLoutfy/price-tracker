@@ -3,26 +3,16 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { siteFor } from './sources';
+import { isAsicsProductUrl } from './parsers/asics';
 import type { TrackerConfig } from './types';
 
 const trackerSchema = z
   .object({
     id: z.string().min(1),
     label: z.string().min(1),
-    url: z
-      .string()
-      .url()
-      .refine(
-        (url) => {
-          try {
-            siteFor(url);
-            return true;
-          } catch {
-            return false;
-          }
-        },
-        (url) => ({ message: `unsupported site: ${url}` }),
-      ),
+    url: z.string().url(),
+    mode: z.enum(['listings', 'discount']).optional(),
+    referencePrice: z.number().positive().optional(),
     filters: z
       .object({
         priceMin: z.number().positive().optional(),
@@ -37,7 +27,26 @@ const trackerSchema = z
     compareBy: z.array(z.string()).optional(),
   })
   // Reject unknown keys: a typo ("minBateryHealth") fails loudly instead of silently not filtering.
-  .strict();
+  .strict()
+  .superRefine((tracker, ctx) => {
+    if (tracker.mode === 'discount') {
+      if (!isAsicsProductUrl(tracker.url)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width' });
+      }
+      if (tracker.referencePrice === undefined) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: 'discount tracking requires a starting referencePrice in EUR' });
+      }
+      if (tracker.filters || tracker.phoneTaxEgp !== undefined || tracker.compareBy || tracker.details) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'listing filters and market options do not apply to discount trackers' });
+      }
+    } else {
+      try { siteFor(tracker.url); }
+      catch { ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: `unsupported site: ${tracker.url}` }); }
+      if (tracker.referencePrice !== undefined) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: 'referencePrice requires discount mode' });
+      }
+    }
+  });
 
 const trackersSchema = z
   .array(trackerSchema)

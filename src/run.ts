@@ -6,6 +6,8 @@ import { collectListings } from './sources';
 import { notify } from './notifier';
 import { loadState, pruneState, saveState } from './state';
 import { failureReason, trackLink, type TrackDeps, type TrackOutcome } from './track';
+import { createAsicsCollector } from './asics';
+import { trackProduct } from './products';
 
 const STATE_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'state', 'seen.json');
 
@@ -20,8 +22,16 @@ async function main(): Promise<void> {
     send: (html, options) => notify(env, html, options),
   };
   const outcomes: TrackOutcome[] = [];
+  const collectProduct = createAsicsCollector();
   try {
-    for (const tracker of trackers) outcomes.push(await trackLink(tracker, state, deps));
+    for (const tracker of trackers) {
+      outcomes.push(tracker.mode === 'discount'
+        ? await trackProduct(tracker, state, {
+            collect: collectProduct,
+            send: deps.send,
+          })
+        : await trackLink(tracker, state, deps));
+    }
   } finally {
     // Persist whatever progress we made, even if something above threw — never lose bookkeeping.
     if (!env.dryRun) saveState(STATE_PATH, state);

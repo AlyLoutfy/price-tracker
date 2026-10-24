@@ -26,7 +26,7 @@ const DIGEST_SIZE = 10;
 const EXCERPT_LENGTH = 220;
 const TITLE_LENGTH = 120;
 
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

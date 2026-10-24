@@ -1,9 +1,9 @@
-# listing-tracker
+# Price Tracker
 
-Give it a [Dubizzle Egypt](https://www.dubizzle.com.eg) (formerly OLX) search link. It sends you a
-**Telegram** message the moment a new matching ad is posted, and tells you whether the price is a
-good deal compared with the rest of the market. It runs for free on **GitHub Actions** (a cron job),
-so there's no server.
+[Price Tracker](https://github.com/AlyLoutfy/price-tracker) watches Dubizzle Egypt searches for new
+matching ads and ASICS France products for discounts. Alerts go to **Telegram**. Dubizzle alerts
+include a market-price comparison; ASICS alerts show the old price, new price and saving in EUR.
+It runs hourly on **GitHub Actions**, with no server or paid reader service.
 
 Currently tracking:
 
@@ -11,8 +11,14 @@ Currently tracking:
 |---------|------|-------------|
 | SEAT Leon · 2021+ | [used Seat Leon, year ≥ 2021](https://www.dubizzle.com.eg/en/vehicles/cars-for-sale/used/seat/model-leon/?filter=year_min_2021) | price 900k–1.51M EGP |
 | iPhone 17 · used | [used iPhone 17](https://www.dubizzle.com.eg/en/mobile-phones-tablets-accessories-numbers/mobile-phones/q-used-iphone-17/) | battery above 95%; 18,000 EGP tax added to phones that still owe it |
+| ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
+| ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
+| ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
 
-## How it works
+ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
+ASICS France. Each colour/size/width combination is checked separately.
+
+## Dubizzle listing alerts
 
 ```
 GitHub Actions cron (hourly)
@@ -51,6 +57,25 @@ GitHub Actions cron (hourly)
 - **Loud on a real outage.** If no link can be read, or every Telegram message fails (a revoked bot
   token, say), the run fails, and GitHub emails you. A single failed link or message is only logged
   and retried next hour.
+
+## ASICS discount alerts
+
+ASICS blocks plain product-page requests. The tracker uses the same public Salesforce Shopper
+Products API as the ASICS storefront, with an anonymous guest session. No personal ASICS account,
+API secret, browser installation or paid subscription is needed. Guest tokens live only in memory.
+
+- The price and stock must match the product code, colour, size and width in your link. A sale on
+  another colour or size does not trigger an alert.
+- An undiscounted first check quietly records the baseline. An existing discount alerts immediately.
+- A price below `referencePrice` alerts when your variant is in stock. An out-of-stock sale is
+  recorded and alerts if that size becomes available while still discounted.
+- The same sale is sent once. A further price drop alerts again. Price rises within a sale stay quiet.
+  After the product returns to full price, a later sale can alert again.
+- A failed Telegram delivery is retried next run. A failed product fetch leaves its previous state
+  untouched. Prices and alert delivery state are saved alongside the existing listing history.
+- Only public product prices are checked; checkout-only codes, shipping and member-only offers are
+  not included. The initial full price is explicit in configuration, so a first-fetch error cannot
+  silently establish a wrong baseline.
 
 ## Reading the ad text: tax and battery
 
@@ -101,6 +126,7 @@ nvm use            # Node 20+
 npm install
 npm run dry-run    # fetches the live links and prints what WOULD be sent — sends nothing
 npm test           # unit + parser tests (offline, uses captured fixtures)
+npm run telegram:test # sends one connection test using the configured bot
 ```
 
 ## 2. Create your Telegram bot (2 minutes)
@@ -125,11 +151,13 @@ npm start                # first run sends one digest per link; later runs alert
 3. **Settings → Actions → General → Workflow permissions** → enable **Read and write permissions**
    (so the job can commit `state/seen.json` back).
 4. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) runs hourly. You
-   can also trigger it from the **Actions** tab (**Run workflow**).
+   can also trigger it from the **Actions** tab (**Run workflow**). Select **test_telegram** to
+   send only a connection test; leave it unchecked for a normal tracking run. Tests and typechecking
+   run before either action.
 
 ## 4. Track a link
 
-Add an entry to [`config/trackers.json`](config/trackers.json):
+Add a Dubizzle search to [`config/trackers.json`](config/trackers.json):
 
 ```jsonc
 {
@@ -159,10 +187,29 @@ Add an entry to [`config/trackers.json`](config/trackers.json):
 - Unknown options are rejected at startup, so a typo like `minBateryHealth` fails loudly instead of
   silently not filtering.
 
+For an ASICS France product, keep the exact size and width in the URL and set its starting full
+price in EUR:
+
+```json
+{
+  "id": "asics-gel-venture-6",
+  "label": "ASICS GEL-VENTURE 6 · Black/Black · EU 42.5 · Standard",
+  "mode": "discount",
+  "url": "https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard",
+  "referencePrice": 100
+}
+```
+
+Listing filters, customs tax and market comparison options do not apply to discount trackers.
+Editing a product URL or reference price resets its sale comparison.
+
 ## Limitations & maintenance
 
-- **Dubizzle only.** Links to other sites are rejected at startup. Adding a site means one parser
-  in `src/parsers/` and one line in `src/sources.ts`.
+- **Supported sites.** Dubizzle Egypt searches and ASICS France product links. Other sites and
+  ASICS locales are rejected at startup.
+- **Current Dubizzle availability.** Recent scheduled runs on 24 October 2026 returned HTTP 503
+  for both searches. Those trackers remain configured and retry hourly; their last seen history
+  is preserved. ASICS checks run independently, so a Dubizzle outage does not stop discount alerts.
 - **Scraping is inherently brittle.** The parser reads three independent copies of the result set
   (the page's app state, its schema.org JSON-LD, and its analytics ad-id arrays), so one of them
   changing shape degrades gracefully. The description only comes from the app state, though: if it
@@ -182,6 +229,10 @@ Add an entry to [`config/trackers.json`](config/trackers.json):
 config/trackers.json     the links you want to track
 src/
   run.ts                 entry point: runs every tracker, saves state, fails the job on an outage
+  asics.ts               anonymous guest session and live ASICS product API
+  products.ts            discount comparison, EUR alert formatting and delivery bookkeeping
+  parsers/asics.ts       exact colour/size/width quote and stock parsing
+  test-telegram.ts       send a single Telegram connection test
   track.ts               one link per run: fetch → filter → reconcile → notify → record what's handled
   sources.ts             site registry; fetches every result page; rejects broken/challenge pages
   fetchers.ts            direct page fetch with retry/backoff
@@ -191,10 +242,10 @@ src/
   market.ts              median, rank and verdict against the other matching ads
   reposts.ts             recognises the same offer re-posted under a new ad ID
   reconcile.ts           pure seed/diff/resync + persist-on-delivery logic
-  state.ts               load/save/merge seen.json (dedup memory; never evicts live keys)
+  state.ts               listing history and product price/discount-delivery memory
   notifier.ts            Telegram message formatting (alerts + first-run digest)
   telegram.ts            Telegram Bot API call
-state/seen.json          dedup memory, committed by the Action
+state/seen.json          tracking state, committed by the Action
 test/                    unit + parser tests (fixtures modelled on live pages)
 .github/workflows/       the scheduled cron job
 ```

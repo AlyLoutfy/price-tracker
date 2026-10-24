@@ -10,6 +10,17 @@ export interface TrackerState {
    * offer reposted under a new id is recognised — even after the original ad was taken down.
    */
   readonly offers?: Record<string, string>;
+  readonly product?: ProductState;
+}
+
+export interface ProductState {
+  readonly price: number;
+  readonly referencePrice: number;
+  readonly currency: 'EUR';
+  readonly inStock: boolean;
+  readonly checkedAt: string;
+  /** Lowest price successfully alerted in the current sale; reset when the sale ends. */
+  readonly alertedPrice?: number;
 }
 
 /** seen.json shape: { [trackerId]: { url, keys, offers } } */
@@ -19,7 +30,13 @@ function isTrackerState(value: unknown): value is TrackerState {
   const entry = value as Partial<TrackerState> | null;
   const offersOk =
     entry?.offers === undefined || (typeof entry.offers === 'object' && entry.offers !== null);
-  return typeof entry?.url === 'string' && Array.isArray(entry.keys) && offersOk;
+  const product = entry?.product;
+  const positive = (n: unknown) => typeof n === 'number' && Number.isFinite(n) && n > 0;
+  const productOk = product === undefined || (product !== null && typeof product === 'object' &&
+    positive(product.price) && positive(product.referencePrice) && product.currency === 'EUR' &&
+    typeof product.inStock === 'boolean' && typeof product.checkedAt === 'string' &&
+    (product.alertedPrice === undefined || positive(product.alertedPrice)));
+  return typeof entry?.url === 'string' && Array.isArray(entry.keys) && offersOk && productOk;
 }
 
 /**

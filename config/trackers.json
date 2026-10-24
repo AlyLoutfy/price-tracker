@@ -7,8 +7,12 @@
       "priceMin": 900000,
       "priceMax": 1510000
     },
-    "details": ["Kilometers"],
-    "compareBy": ["Year"]
+    "details": [
+      "Kilometers"
+    ],
+    "compareBy": [
+      "Year"
+    ]
   },
   {
     "id": "iphone-17",
@@ -19,7 +23,32 @@
       "priceMin": 20000,
       "minBatteryHealth": 96
     },
-    "details": ["Storage"],
-    "compareBy": ["Storage"]
+    "details": [
+      "Storage"
+    ],
+    "compareBy": [
+      "Storage"
+    ]
+  },
+  {
+    "id": "asics-gel-venture-6",
+    "label": "ASICS GEL-VENTURE 6 · Black/Black · EU 42.5 · Standard",
+    "mode": "discount",
+    "url": "https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard",
+    "referencePrice": 100
+  },
+  {
+    "id": "asics-gel-challenger-15-clay",
+    "label": "ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight · EU 42.5 · Standard",
+    "mode": "discount",
+    "url": "https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard",
+    "referencePrice": 120
+  },
+  {
+    "id": "asics-gel-excite-11",
+    "label": "ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze · EU 42.5 · Standard",
+    "mode": "discount",
+    "url": "https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard",
+    "referencePrice": 90
   }
 ]

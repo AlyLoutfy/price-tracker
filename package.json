@@ -1,14 +1,15 @@
 {
-  "name": "listing-tracker",
+  "name": "price-tracker",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Track Dubizzle Egypt search links and send a Telegram alert, with a market-price verdict, when a new matching ad is posted.",
+  "description": "Price Tracker: Telegram alerts for Dubizzle listings and ASICS France discounts.",
   "scripts": {
     "start": "tsx src/run.ts",
     "dry-run": "DRY_RUN=1 tsx src/run.ts",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "telegram:test": "tsx src/test-telegram.ts"
   },
   "engines": {
     "node": ">=20"
