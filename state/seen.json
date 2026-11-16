@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-16T12:12:59.323Z"
+      "checkedAt": "2026-11-16T22:37:40.239Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-16T12:12:59.732Z"
+      "checkedAt": "2026-11-16T22:37:40.750Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,7 +60,7 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-16T12:13:00.175Z"
+      "checkedAt": "2026-11-16T22:37:41.214Z"
     }
   }
 }
