@@ -1,0 +1,617 @@
+{
+  "pages": {
+    "prev": "",
+    "next": "",
+    "totalPages": 1,
+    "totalResources": 1
+  },
+  "objects": [
+    {
+      "id": "107d4651-5f29-4bc8-8d87-39ed0963f752",
+      "channelId": "d9a5bc42-4b9c-4976-858a-f159cf99c647",
+      "channelName": "Nike.com",
+      "marketplace": "FR",
+      "language": "fr",
+      "lastFetchTime": "2026-11-19T12:34:10.877Z",
+      "productInfo": [
+        {
+          "merchProduct": {
+            "id": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "snapshotId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "modificationDate": "2026-11-19T12:33:11.683Z",
+            "status": "ACTIVE",
+            "merchGroup": "EU",
+            "styleCode": "HF5441",
+            "colorCode": "105",
+            "styleColor": "HF5441-105",
+            "pid": "1015651858",
+            "catalogId": "107d4651-5f29-4bc8-8d87-39ed0963f752",
+            "brand": "Nike",
+            "channels": [
+              "Nike Store Experiences",
+              "Nike.com",
+              "NikeApp"
+            ],
+            "genders": [
+              "MEN"
+            ],
+            "productType": "FOOTWEAR",
+            "quantityLimit": 10,
+            "publishType": "FLOW",
+            "exclusiveAccess": false,
+            "hardLaunch": false,
+            "commerceStartDate": "2024-12-19T08:00:00.000Z",
+            "resourceType": "merchProduct"
+          },
+          "merchPrice": {
+            "id": "40a2391d-53b5-5e2c-b8fd-c791020a0f68",
+            "snapshotId": "a24a6ea4-ce75-4665-a070-001795091591",
+            "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "parentId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "parentType": "merchProduct",
+            "modificationDate": "2026-11-19T12:33:11.373Z",
+            "country": "FR",
+            "msrp": 119.99,
+            "fullPrice": 119.99,
+            "currentPrice": 71.99,
+            "currency": "EUR",
+            "discounted": true,
+            "promoInclusions": [],
+            "promoExclusions": [
+              "FALSE"
+            ],
+            "resourceType": "merchPrice"
+          },
+          "availability": {
+            "id": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+            "resourceType": "availableProducts",
+            "available": true
+          },
+          "productContent": {
+            "globalPid": "1015651858",
+            "langLocale": "fr_FR",
+            "colorDescription": "Blanc/Blanc/Light Smoke Grey",
+            "slug": "chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V",
+            "fullTitle": "Chaussures Nike Dunk Low Retro pour homme",
+            "title": "Nike Dunk Low Retro",
+            "subtitle": "Chaussure pour homme"
+          },
+          "skus": [
+            {
+              "id": "1bff7cbe-f0e8-5529-a6ed-cc182014c149",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1004357718",
+              "gtin": "00197864027288",
+              "nikeSize": "3.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "35.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "24ef7e95-9084-526c-9f82-4ecd6f4d2888",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1004358954",
+              "gtin": "00197864045718",
+              "nikeSize": "4",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "36",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "52b96d39-a09a-5642-ad19-3fb5805771fe",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1004356326",
+              "gtin": "00197864014189",
+              "nikeSize": "4.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "36.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "34a4b53a-f6e8-57c1-98f5-84b8227bfe88",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1004357393",
+              "gtin": "00197864013373",
+              "nikeSize": "5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "37.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "1b92cca1-649c-5b4d-80e0-8c22524ed8db",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1004357528",
+              "gtin": "00197864033739",
+              "nikeSize": "5.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "38",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "5410153b-7f91-5624-9a88-525ac978b4ea",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819164",
+              "gtin": "00197859100729",
+              "nikeSize": "6",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "38.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "31c7817e-a24a-501d-a18a-3185ef907ba1",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820280",
+              "gtin": "00197859110667",
+              "nikeSize": "6.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "39",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "48b0ea30-e646-5ccb-bcba-8988f9444c5f",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820652",
+              "gtin": "00197859115181",
+              "nikeSize": "7",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "40",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "c054509b-5fde-584e-9c17-2071541772ff",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820431",
+              "gtin": "00197859112616",
+              "nikeSize": "7.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "40.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "4c7fc3b7-54df-5598-9648-f1f902438a93",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819990",
+              "gtin": "00197859114528",
+              "nikeSize": "8",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "41",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "677e2069-950b-55ec-a7f9-66e31d3c52fb",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819755",
+              "gtin": "00197859111640",
+              "nikeSize": "8.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "42",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "89017dc3-2b00-587d-8fb1-a136e320f101",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819396",
+              "gtin": "00197859101863",
+              "nikeSize": "9",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "42.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "22e958a0-e03b-5333-9977-95aeb8de00a3",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820506",
+              "gtin": "00197859113675",
+              "nikeSize": "9.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "43",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "e2d0352c-9c05-511c-8f19-66ee7b8e7a5b",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819030",
+              "gtin": "00197859102631",
+              "nikeSize": "10",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "44",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "bed5fdb4-cc00-52f9-920b-dcfdd3aa9d9e",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820794",
+              "gtin": "00197859113941",
+              "nikeSize": "10.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "44.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "457bca80-78fc-5c06-bbe3-558838f8a598",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820211",
+              "gtin": "00197859111763",
+              "nikeSize": "11",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "45",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "8179f83b-e18f-5857-aee6-71a9581ff439",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819745",
+              "gtin": "00197859106394",
+              "nikeSize": "11.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "45.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "0995df99-fe8f-5d94-881e-26f621878a5c",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819937",
+              "gtin": "00197859108909",
+              "nikeSize": "12",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "46",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "d63aed4a-0085-5c91-931c-8710a6d59410",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820003",
+              "gtin": "00197859112135",
+              "nikeSize": "12.5",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "47",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "6d41f5f6-754f-53fb-bb29-d73708d66acb",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820421",
+              "gtin": "00197859112470",
+              "nikeSize": "13",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "47.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "010b6e6b-c3c4-5888-ac33-43c2f5f75d4e",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003819536",
+              "gtin": "00197859104390",
+              "nikeSize": "14",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "48.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            },
+            {
+              "id": "1b893b3e-072a-5e5d-a438-51d354df3009",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "merchGroup": "EU",
+              "stockKeepingUnitId": "1003820647",
+              "gtin": "00197859110803",
+              "nikeSize": "15",
+              "countrySpecifications": [
+                {
+                  "country": "FR",
+                  "localizedSize": "49.5",
+                  "localizedSizePrefix": "EU"
+                }
+              ],
+              "resourceType": "merchSku"
+            }
+          ],
+          "availableSkus": [
+            {
+              "id": "1bff7cbe-f0e8-5529-a6ed-cc182014c149",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": false,
+              "level": "OOS",
+              "skuId": "1bff7cbe-f0e8-5529-a6ed-cc182014c149"
+            },
+            {
+              "id": "24ef7e95-9084-526c-9f82-4ecd6f4d2888",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "LOW",
+              "skuId": "24ef7e95-9084-526c-9f82-4ecd6f4d2888"
+            },
+            {
+              "id": "52b96d39-a09a-5642-ad19-3fb5805771fe",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "52b96d39-a09a-5642-ad19-3fb5805771fe"
+            },
+            {
+              "id": "34a4b53a-f6e8-57c1-98f5-84b8227bfe88",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "MEDIUM",
+              "skuId": "34a4b53a-f6e8-57c1-98f5-84b8227bfe88"
+            },
+            {
+              "id": "1b92cca1-649c-5b4d-80e0-8c22524ed8db",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "LOW",
+              "skuId": "1b92cca1-649c-5b4d-80e0-8c22524ed8db"
+            },
+            {
+              "id": "5410153b-7f91-5624-9a88-525ac978b4ea",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "5410153b-7f91-5624-9a88-525ac978b4ea"
+            },
+            {
+              "id": "31c7817e-a24a-501d-a18a-3185ef907ba1",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "31c7817e-a24a-501d-a18a-3185ef907ba1"
+            },
+            {
+              "id": "48b0ea30-e646-5ccb-bcba-8988f9444c5f",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "48b0ea30-e646-5ccb-bcba-8988f9444c5f"
+            },
+            {
+              "id": "c054509b-5fde-584e-9c17-2071541772ff",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "c054509b-5fde-584e-9c17-2071541772ff"
+            },
+            {
+              "id": "4c7fc3b7-54df-5598-9648-f1f902438a93",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "4c7fc3b7-54df-5598-9648-f1f902438a93"
+            },
+            {
+              "id": "677e2069-950b-55ec-a7f9-66e31d3c52fb",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "677e2069-950b-55ec-a7f9-66e31d3c52fb"
+            },
+            {
+              "id": "89017dc3-2b00-587d-8fb1-a136e320f101",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "89017dc3-2b00-587d-8fb1-a136e320f101"
+            },
+            {
+              "id": "22e958a0-e03b-5333-9977-95aeb8de00a3",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": false,
+              "level": "OOS",
+              "skuId": "22e958a0-e03b-5333-9977-95aeb8de00a3"
+            },
+            {
+              "id": "e2d0352c-9c05-511c-8f19-66ee7b8e7a5b",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "e2d0352c-9c05-511c-8f19-66ee7b8e7a5b"
+            },
+            {
+              "id": "bed5fdb4-cc00-52f9-920b-dcfdd3aa9d9e",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "bed5fdb4-cc00-52f9-920b-dcfdd3aa9d9e"
+            },
+            {
+              "id": "457bca80-78fc-5c06-bbe3-558838f8a598",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "457bca80-78fc-5c06-bbe3-558838f8a598"
+            },
+            {
+              "id": "8179f83b-e18f-5857-aee6-71a9581ff439",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "8179f83b-e18f-5857-aee6-71a9581ff439"
+            },
+            {
+              "id": "0995df99-fe8f-5d94-881e-26f621878a5c",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "0995df99-fe8f-5d94-881e-26f621878a5c"
+            },
+            {
+              "id": "d63aed4a-0085-5c91-931c-8710a6d59410",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "d63aed4a-0085-5c91-931c-8710a6d59410"
+            },
+            {
+              "id": "6d41f5f6-754f-53fb-bb29-d73708d66acb",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "6d41f5f6-754f-53fb-bb29-d73708d66acb"
+            },
+            {
+              "id": "010b6e6b-c3c4-5888-ac33-43c2f5f75d4e",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "010b6e6b-c3c4-5888-ac33-43c2f5f75d4e"
+            },
+            {
+              "id": "1b893b3e-072a-5e5d-a438-51d354df3009",
+              "productId": "0f2c540f-1635-5b39-a9e1-52aa7ebee4c5",
+              "resourceType": "availableSkus",
+              "available": true,
+              "level": "HIGH",
+              "skuId": "1b893b3e-072a-5e5d-a438-51d354df3009"
+            }
+          ]
+        }
+      ],
+      "resourceType": "thread"
+    }
+  ]
+}

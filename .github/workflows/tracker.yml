@@ -2,15 +2,20 @@ name: Price Tracker
 
 on:
   schedule:
-    # Every hour. Fetches go straight to the site — nothing metered to conserve — so the only cost
-    # is a runner minute. GitHub may delay scheduled runs under load; this is best-effort.
-    - cron: '0 * * * *'
+    # Every hour, at :23. GitHub delays and drops scheduled runs under load, worst at the top of the
+    # hour; at :00, runs averaged ~6 hours apart (Oct–Nov 2026). Fetches go straight to the site —
+    # nothing metered to conserve — so the only cost is a runner minute. Still best-effort.
+    - cron: '23 * * * *'
   workflow_dispatch:
     inputs:
       test_telegram:
         description: Send only a Telegram connection test
         type: boolean
         default: false
+      test_message:
+        description: Text for the Telegram test, replacing the default (Telegram HTML)
+        type: string
+        required: false
 
 # Prevent overlapping runs from racing on the committed state file.
 concurrency:
@@ -56,6 +61,8 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Through the environment, never interpolated into the script, so any text is safe.
+          TELEGRAM_TEST_MESSAGE: ${{ inputs.test_message }}
         run: npm run telegram:test
 
       - name: Check listings and product discounts

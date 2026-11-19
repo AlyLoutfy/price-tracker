@@ -43,4 +43,12 @@ describe('loadTrackers', () => {
     expect(() => loadTrackers(configFile([{ ...shoe, url: tracker.url }]))).toThrow(/ASICS/);
     expect(() => loadTrackers(configFile([{ ...shoe, filters: { priceMin: 10 } }]))).toThrow(/listing filters/);
   });
+
+  it('accepts a Nike France product only with the EU size to watch', () => {
+    const dunk = { id: 'dunk', label: 'Dunk Low', mode: 'discount', referencePrice: 119.99,
+      url: 'https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43' };
+    expect(loadTrackers(configFile([dunk]))).toHaveLength(1);
+    expect(() => loadTrackers(configFile([{ ...dunk, url: dunk.url.split('?')[0] }]))).toThrow(/Nike France/);
+    expect(() => loadTrackers(configFile([{ ...dunk, url: dunk.url.replace('/fr/', '/us/') }]))).toThrow(/Nike France/);
+  });
 });

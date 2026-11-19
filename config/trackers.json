@@ -35,5 +35,12 @@
     "mode": "discount",
     "url": "https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard",
     "referencePrice": 90
+  },
+  {
+    "id": "nike-dunk-low-retro",
+    "label": "Nike Dunk Low Retro · Blanc/Blanc/Light Smoke Grey · EU 43",
+    "mode": "discount",
+    "url": "https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43",
+    "referencePrice": 119.99
   }
 ]

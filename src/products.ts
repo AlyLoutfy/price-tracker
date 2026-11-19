@@ -1,5 +1,4 @@
-import type { TrackerConfig } from './types';
-import type { ProductSnapshot } from './parsers/asics';
+import type { ProductSnapshot, TrackerConfig } from './types';
 import type { SeenState } from './state';
 import type { TrackOutcome } from './track';
 import { escapeHtml } from './notifier';
@@ -17,10 +16,10 @@ export function formatDiscountMessage(tracker: TrackerConfig, product: ProductSn
     '🏷️ <b>Price Tracker — Discount</b>',
     `<b>${escapeHtml(product.title)}</b>`,
     escapeHtml(product.color),
-    `Size EU ${escapeHtml(product.sizeLabel)} · ${escapeHtml(product.width)} · In stock`,
+    `Size EU ${escapeHtml(product.sizeLabel)}${product.width ? ` · ${escapeHtml(product.width)}` : ''} · In stock`,
     `<s>${eur(reference)}</s> → <b>${eur(product.price)}</b> (${percent}% off)`,
     `Save ${eur(Math.round((reference - product.price) * 100) / 100)}`,
-    `<a href="${escapeHtml(tracker.url)}">Open on ASICS France</a>`,
+    `<a href="${escapeHtml(tracker.url)}">Open on ${escapeHtml(product.store)}</a>`,
   ].join('\n');
 }
 

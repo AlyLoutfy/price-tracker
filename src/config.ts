@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { z } from 'zod';
 import { siteFor } from './sources';
 import { isAsicsProductUrl } from './parsers/asics';
+import { isNikeProductUrl } from './parsers/nike';
 import type { TrackerConfig } from './types';
 
 const trackerSchema = z
@@ -31,8 +32,8 @@ const trackerSchema = z
   .strict()
   .superRefine((tracker, ctx) => {
     if (tracker.mode === 'discount') {
-      if (!isAsicsProductUrl(tracker.url)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width' });
+      if (!isAsicsProductUrl(tracker.url) && !isNikeProductUrl(tracker.url)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width, or a Nike France product URL with an EU size (?size=43)' });
       }
       if (tracker.referencePrice === undefined) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: 'discount tracking requires a starting referencePrice in EUR' });

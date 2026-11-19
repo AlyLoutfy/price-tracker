@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Price Tracker: Telegram alerts for Dubizzle listings and ASICS France discounts.",
+  "description": "Price Tracker: Telegram alerts for Dubizzle listings and ASICS and Nike France discounts.",
   "scripts": {
     "start": "tsx src/run.ts",
     "dry-run": "DRY_RUN=1 tsx src/run.ts",

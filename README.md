@@ -1,9 +1,9 @@
 # Price Tracker
 
 [Price Tracker](https://github.com/AlyLoutfy/price-tracker) watches Dubizzle Egypt searches for new
-matching ads and ASICS France products for discounts. Alerts go to **Telegram**. Dubizzle alerts
-include a market-price comparison; ASICS alerts show the old price, new price and saving in EUR.
-It runs hourly on **GitHub Actions**, with no server or paid reader service.
+matching ads, and ASICS France and Nike France products for discounts. Alerts go to **Telegram**.
+Dubizzle alerts include a market-price comparison; discount alerts show the old price, new price and
+saving in EUR. It runs hourly on **GitHub Actions**, with no server or paid reader service.
 
 Currently tracking:
 
@@ -13,9 +13,11 @@ Currently tracking:
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
+| Nike Dunk Low Retro · Blanc/Blanc/Light Smoke Grey | [HF5441-105](https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43) | EU 43; alert below €119.99, when in stock |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
-ASICS France. Each colour/size/width combination is checked separately.
+ASICS France. The Nike reference is the full price on 19 November 2026, when it was on sale at
+€71.99 with EU 43 out of stock. Each colour/size/width combination is checked separately.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
@@ -66,14 +68,18 @@ GitHub Actions cron (hourly)
   their state are still saved, and every tracker is retried next hour. ASICS success cannot hide a
   failed Dubizzle search. Individual failed messages are also retried.
 
-## ASICS discount alerts
+## ASICS and Nike discount alerts
 
 ASICS blocks plain product-page requests. The tracker uses the same public Salesforce Shopper
 Products API as the ASICS storefront, with an anonymous guest session. No personal ASICS account,
 API secret, browser installation or paid subscription is needed. Guest tokens live only in memory.
 
-- The price and stock must match the product code, colour, size and width in your link. A sale on
-  another colour or size does not trigger an alert.
+Nike France products are read from Nike's public product feed (`api.nike.com/product_feed`), which
+returns a colour's price, sizes and stock in one response, with no account or API key. Nike prices
+a colour as a whole; stock is checked for the EU size in your link.
+
+- The price and stock must match the product code, colour, size and (for ASICS) width in your
+  link. A sale on another colour or size does not trigger an alert.
 - An undiscounted first check quietly records the baseline. An existing discount alerts immediately.
 - A price below `referencePrice` alerts when your variant is in stock. An out-of-stock sale is
   recorded and alerts if that size becomes available while still discounted.
@@ -134,8 +140,8 @@ npm start                # first run sends one digest per link; later runs alert
    (so the job can commit `state/seen.json` back).
 4. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) runs hourly. You
    can also trigger it from the **Actions** tab (**Run workflow**). Select **test_telegram** to
-   send only a connection test; leave it unchecked for a normal tracking run. Tests and typechecking
-   run before either action.
+   send only a connection test (**test_message** optionally replaces its text); leave it unchecked
+   for a normal tracking run. Tests and typechecking run before either action.
 
 ## 4. Track a link
 
@@ -177,13 +183,26 @@ price in EUR:
 }
 ```
 
+For a Nike France product, copy the product link and add the EU size to watch as `?size=`. Nike's
+own links carry no size, and its site ignores the parameter:
+
+```json
+{
+  "id": "nike-dunk-low-retro",
+  "label": "Nike Dunk Low Retro · Blanc/Blanc/Light Smoke Grey · EU 43",
+  "mode": "discount",
+  "url": "https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43",
+  "referencePrice": 119.99
+}
+```
+
 Listing filters, customs tax and market comparison options do not apply to discount trackers.
 Editing a product URL or reference price resets its sale comparison.
 
 ## Limitations & maintenance
 
-- **Supported sites.** Dubizzle Egypt searches and ASICS France product links. Other sites and
-  ASICS locales are rejected at startup.
+- **Supported sites.** Dubizzle Egypt searches, and ASICS France and Nike France product links.
+  Other sites and locales are rejected at startup.
 - **Dubizzle challenges.** HTTP 503 or a challenge-only HTTP 200 triggers the browser fallback.
   A page is accepted only when it contains actual listing data or explicitly reports zero results.
   An unfinished challenge leaves the previous seen history intact.
@@ -195,8 +214,9 @@ Editing a product URL or reference price resets its sale comparison.
 - **A site can start blocking us.** Browser loading can also fail if Dubizzle changes its checks
   or has an outage. An unreadable link fails the job after the other trackers have been checked;
   it is retried next hour without losing history.
-- **GitHub cron caveats.** Scheduled runs can be delayed under load, and GitHub auto-disables
-  schedules after ~60 days of no repo activity (the state commits keep it active).
+- **GitHub cron caveats.** Scheduled runs can be delayed or skipped under load, worst at the top of
+  the hour, so the job runs at :23. GitHub also auto-disables schedules after ~60 days of no repo
+  activity (the state commits keep it active).
 
 ## Project layout
 
@@ -205,9 +225,11 @@ config/trackers.json     the links you want to track
 src/
   run.ts                 entry point: runs every tracker, saves state, fails the job on an outage
   asics.ts               anonymous guest session and live ASICS product API
+  nike.ts                Nike's public product feed, France, one colour per request
   products.ts            discount comparison, EUR alert formatting and delivery bookkeeping
   parsers/asics.ts       exact colour/size/width quote and stock parsing
-  test-telegram.ts       send a single Telegram connection test
+  parsers/nike.ts        colour price and EU-size stock from the Nike feed
+  test-telegram.ts       send a single Telegram connection test (or your own text)
   track.ts               one link per run: fetch → filter → reconcile → notify → record what's handled
   sources.ts             site registry; fetches every result page; rejects broken/challenge pages
   fetchers.ts            direct page fetch with retry/backoff

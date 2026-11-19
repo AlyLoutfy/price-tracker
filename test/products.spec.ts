@@ -1,14 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { trackProduct } from '../src/products';
 import type { SeenState } from '../src/state';
-import type { TrackerConfig } from '../src/types';
-import type { ProductSnapshot } from '../src/parsers/asics';
+import type { ProductSnapshot, TrackerConfig } from '../src/types';
 
 const url = 'https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard';
 const tracker: TrackerConfig = { id: 'shoe', label: 'GEL-VENTURE 6', url, mode: 'discount', referencePrice: 100 };
 const snapshot = (price: number, inStock = true): ProductSnapshot => ({
-  key: 'asics:1203A297-002:4550457173490', title: 'GEL-VENTURE 6',
-  price, inStock, currency: 'EUR', size: '9', sizeLabel: '42.5', width: 'Standard', color: 'Black/Black',
+  key: 'asics:1203A297-002:4550457173490', title: 'GEL-VENTURE 6', price, inStock, currency: 'EUR',
+  size: '9', sizeLabel: '42.5', width: 'Standard', color: 'Black/Black', store: 'ASICS France',
 });
 const send = vi.fn<(html: string) => Promise<void>>();
 const check = (state: SeenState, price: number, inStock = true) =>
@@ -35,9 +34,25 @@ describe('discount tracking', () => {
     const message = send.mock.calls[0]![0];
     expect(message).toContain('80.00 EUR');
     expect(message).toContain('20% off');
-    expect(message).toContain('size=9&amp;width=Standard');
+    expect(message).toContain('Size EU 42.5 · Standard · In stock');
+    expect(message).toContain('size=9&amp;width=Standard">Open on ASICS France</a>');
     expect(message).not.toContain('EGP');
     expect(state.shoe?.product?.alertedPrice).toBe(80);
+  });
+
+  it('names the store and leaves out the width when the store has none', async () => {
+    const dunk: TrackerConfig = {
+      id: 'dunk', label: 'Dunk Low', mode: 'discount', referencePrice: 119.99,
+      url: 'https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43',
+    };
+    await trackProduct(dunk, {}, { send, collect: async () => ({
+      key: 'nike:HF5441-105:22e958a0', title: 'Nike Dunk Low Retro', price: 71.99, inStock: true,
+      currency: 'EUR', size: '43', sizeLabel: '43', color: 'Blanc/Blanc/Light Smoke Grey', store: 'Nike France',
+    }) });
+    const message = send.mock.calls[0]![0];
+    expect(message).toContain('Size EU 43 · In stock');
+    expect(message).toContain('<s>119.99 EUR</s> → <b>71.99 EUR</b> (40% off)');
+    expect(message).toContain('HF5441-105?size=43">Open on Nike France</a>');
   });
 
   it('alerts once per sale and further reduction, suppressing repeats and price rises', async () => {

@@ -12,7 +12,7 @@ describe('ASICS product parser', () => {
     expect(parseAsicsProduct(fixture, url)).toEqual({
       key: 'asics:1203A297-002:4550457173490', title: 'GEL-VENTURE 6',
       price: 100, currency: 'EUR', inStock: true, size: '9', sizeLabel: '42.5',
-      width: 'Standard', color: 'Black/Black',
+      width: 'Standard', color: 'Black/Black', store: 'ASICS France',
     });
   });
 

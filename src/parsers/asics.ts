@@ -1,16 +1,6 @@
-/** Exact colour, size and width requested by an ASICS France product link. */
-export interface ProductSnapshot {
-  readonly key: string;
-  readonly title: string;
-  readonly price: number;
-  readonly currency: 'EUR';
-  readonly inStock: boolean;
-  readonly color: string;
-  readonly size: string;
-  readonly sizeLabel: string;
-  readonly width: string;
-}
+import type { ProductSnapshot } from '../types';
 
+/** An ASICS France product link names the exact colour, size and width to watch. */
 export function isAsicsProductUrl(value: string): boolean {
   try {
     const url = new URL(value);
@@ -63,6 +53,6 @@ export function parseAsicsProduct(data: unknown, sourceUrl: string): ProductSnap
   return {
     key: `asics:${code}:${selected.productId}`, title: data.name,
     price: Math.round(price * 100) / 100, currency: 'EUR', inStock: selected.orderable,
-    color: label('color', color), size, sizeLabel: label('size', size), width,
+    color: label('color', color), size, sizeLabel: label('size', size), width, store: 'ASICS France',
   };
 }

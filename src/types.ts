@@ -32,6 +32,24 @@ export interface TrackerFilters {
   readonly minBatteryHealth?: number;
 }
 
+/** The exact colour and size a discount tracker watches, as its store quotes it. */
+export interface ProductSnapshot {
+  readonly key: string;
+  readonly title: string;
+  readonly price: number;
+  readonly currency: 'EUR';
+  readonly inStock: boolean;
+  readonly color: string;
+  /** The size as the tracked link gives it. */
+  readonly size: string;
+  /** The EU size shown to shoppers, e.g. "42.5". */
+  readonly sizeLabel: string;
+  /** Only for stores that sell several widths (ASICS). */
+  readonly width?: string;
+  /** Where the alert's link opens, e.g. "ASICS France". */
+  readonly store: string;
+}
+
 /** One link the user wants to be alerted about. */
 export interface TrackerConfig {
   readonly id: string;
@@ -39,7 +57,7 @@ export interface TrackerConfig {
   readonly url: string;
   /** A disabled watch keeps its history but makes no requests or sends. */
   readonly enabled?: boolean;
-  /** Omitted for Dubizzle searches; discount watches the exact ASICS product variant. */
+  /** Omitted for Dubizzle searches; discount watches the exact ASICS or Nike product variant. */
   readonly mode?: 'listings' | 'discount';
   /** Starting full price, in EUR, for a discount tracker. */
   readonly referencePrice?: number;

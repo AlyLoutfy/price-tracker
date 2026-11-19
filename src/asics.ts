@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
-import { asicsProductCode, parseAsicsProduct, type ProductSnapshot } from './parsers/asics';
+import { asicsProductCode, parseAsicsProduct } from './parsers/asics';
+import type { ProductSnapshot } from './types';
 
 // Public storefront settings published by ASICS' production JavaScript bundle. This client ID
 // identifies its anonymous shop app; it is not a private API key or a personal ASICS account.
