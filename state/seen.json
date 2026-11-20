@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-20T04:04:47.804Z"
+      "checkedAt": "2026-11-20T13:18:18.775Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-20T04:04:48.171Z"
+      "checkedAt": "2026-11-20T13:18:19.362Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,22 +60,8 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-20T04:04:48.708Z",
+      "checkedAt": "2026-11-20T13:18:19.916Z",
       "alertedPrice": 63
-    }
-  },
-  "nike-dunk-low-retro": {
-    "url": "https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43",
-    "keys": [
-      "nike:HF5441-105:22e958a0-e03b-5333-9977-95aeb8de00a3"
-    ],
-    "product": {
-      "price": 59.99,
-      "referencePrice": 119.99,
-      "currency": "EUR",
-      "inStock": true,
-      "checkedAt": "2026-11-20T04:04:49.136Z",
-      "alertedPrice": 59.99
     }
   }
 }
