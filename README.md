@@ -13,11 +13,9 @@ Currently tracking:
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
-| Nike Dunk Low Retro · Blanc/Blanc/Light Smoke Grey | [HF5441-105](https://www.nike.com/fr/t/chaussures-nike-dunk-low-retro-pour-homme-GeHBr62V/HF5441-105?size=43) | EU 43; alert below €119.99, when in stock |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
-ASICS France. The Nike reference is the full price on 19 November 2026, when it was on sale at
-€71.99 with EU 43 out of stock. Each colour/size/width combination is checked separately.
+ASICS France. Each colour/size/width combination is checked separately.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
