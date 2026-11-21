@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-21T11:28:58.763Z"
+      "checkedAt": "2026-11-21T17:56:40.214Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-21T11:28:59.385Z"
+      "checkedAt": "2026-11-21T17:56:40.598Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,8 +60,60 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-21T11:28:59.825Z",
+      "checkedAt": "2026-11-21T17:56:40.997Z",
       "alertedPrice": 63
+    }
+  },
+  "zara-fruit-of-the-loom-t-shirt": {
+    "url": "https://www.zara.com/eg/en/fruit-of-the-loom--graphic-t-shirt-p00962331.html?v1=577330775",
+    "keys": [
+      "zara:577330775"
+    ],
+    "product": {
+      "price": 1990,
+      "referencePrice": 1990,
+      "currency": "EGP",
+      "inStock": true,
+      "checkedAt": "2026-11-21T17:56:41.151Z"
+    }
+  },
+  "zara-embroidered-t-shirt": {
+    "url": "https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900",
+    "keys": [
+      "zara:549569900"
+    ],
+    "product": {
+      "price": 1690,
+      "referencePrice": 1690,
+      "currency": "EGP",
+      "inStock": true,
+      "checkedAt": "2026-11-21T17:56:41.303Z"
+    }
+  },
+  "zara-textured-chino-trousers": {
+    "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298",
+    "keys": [
+      "zara:545470298"
+    ],
+    "product": {
+      "price": 2590,
+      "referencePrice": 2590,
+      "currency": "EGP",
+      "inStock": true,
+      "checkedAt": "2026-11-21T17:56:41.366Z"
+    }
+  },
+  "zara-argyle-jumper": {
+    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390",
+    "keys": [
+      "zara:554794390"
+    ],
+    "product": {
+      "price": 2590,
+      "referencePrice": 2590,
+      "currency": "EGP",
+      "inStock": true,
+      "checkedAt": "2026-11-21T17:56:41.452Z"
     }
   }
 }
