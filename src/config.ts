@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { siteFor } from './sources';
 import { isAsicsProductUrl } from './parsers/asics';
 import { isNikeProductUrl } from './parsers/nike';
+import { isZaraProductUrl } from './parsers/zara';
 import type { TrackerConfig } from './types';
 
 const trackerSchema = z
@@ -32,11 +33,11 @@ const trackerSchema = z
   .strict()
   .superRefine((tracker, ctx) => {
     if (tracker.mode === 'discount') {
-      if (!isAsicsProductUrl(tracker.url) && !isNikeProductUrl(tracker.url)) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width, or a Nike France product URL with an EU size (?size=43)' });
+      if (![isAsicsProductUrl, isNikeProductUrl, isZaraProductUrl].some((isProduct) => isProduct(tracker.url))) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width, a Nike France product URL with an EU size (?size=43), or a Zara Egypt product URL with its colour (?v1=)' });
       }
       if (tracker.referencePrice === undefined) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: 'discount tracking requires a starting referencePrice in EUR' });
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: "discount tracking requires a starting referencePrice in the store's currency" });
       }
       if (tracker.filters || tracker.phoneTaxEgp !== undefined || tracker.compareBy || tracker.details) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'listing filters and market options do not apply to discount trackers' });

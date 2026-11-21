@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
+import type { Currency } from './types';
 
 /** What we remember per tracker: the link it last watched and every listing key seen there. */
 export interface TrackerState {
@@ -16,7 +17,7 @@ export interface TrackerState {
 export interface ProductState {
   readonly price: number;
   readonly referencePrice: number;
-  readonly currency: 'EUR';
+  readonly currency: Currency;
   readonly inStock: boolean;
   readonly checkedAt: string;
   /** Lowest price successfully alerted in the current sale; reset when the sale ends. */
@@ -33,7 +34,8 @@ function isTrackerState(value: unknown): value is TrackerState {
   const product = entry?.product;
   const positive = (n: unknown) => typeof n === 'number' && Number.isFinite(n) && n > 0;
   const productOk = product === undefined || (product !== null && typeof product === 'object' &&
-    positive(product.price) && positive(product.referencePrice) && product.currency === 'EUR' &&
+    positive(product.price) && positive(product.referencePrice) &&
+    (product.currency === 'EUR' || product.currency === 'EGP') &&
     typeof product.inStock === 'boolean' && typeof product.checkedAt === 'string' &&
     (product.alertedPrice === undefined || positive(product.alertedPrice)));
   return typeof entry?.url === 'string' && Array.isArray(entry.keys) && offersOk && productOk;

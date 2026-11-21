@@ -55,6 +55,22 @@ describe('discount tracking', () => {
     expect(message).toContain('HF5441-105?size=43">Open on Nike France</a>');
   });
 
+  it('shows EGP as Zara Egypt does and lists the sizes in stock for a whole-colour watch', async () => {
+    const jumper: TrackerConfig = {
+      id: 'jumper', label: 'Argyle jumper', mode: 'discount', referencePrice: 2590,
+      url: 'https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390',
+    };
+    await trackProduct(jumper, {}, { send, collect: async () => ({
+      key: 'zara:554794390', title: 'BRUSHED-EFFECT ARGYLE JUMPER', price: 1813, inStock: true,
+      currency: 'EGP', color: 'Grey / Blue', sizesInStock: ['L', 'XL'], store: 'Zara Egypt',
+    }) });
+    const message = send.mock.calls[0]![0];
+    expect(message).toContain('In stock: L · XL');
+    expect(message).toContain('<s>2,590 EGP</s> → <b>1,813 EGP</b> (30% off)');
+    expect(message).toContain('Save 777 EGP');
+    expect(message).toContain('?v1=554794390">Open on Zara Egypt</a>');
+  });
+
   it('alerts once per sale and further reduction, suppressing repeats and price rises', async () => {
     const state: SeenState = {};
     for (const price of [100, 80, 80, 90, 80, 70, 70]) await check(state, price);

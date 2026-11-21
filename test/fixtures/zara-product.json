@@ -1,0 +1,777 @@
+{
+  "product": {
+    "id": 545466522,
+    "type": "Product",
+    "kind": "Wear",
+    "state": "visible",
+    "brand": {
+      "brandId": 1,
+      "brandGroupId": 1,
+      "brandGroupCode": "zara"
+    },
+    "name": "COMFORT TEXTURED CHINO TROUSERS",
+    "detail": {
+      "reference": "00706650-I2026",
+      "displayReference": "0706/650",
+      "colors": [
+        {
+          "id": "801",
+          "hexCode": "#2F3232",
+          "productId": 545470298,
+          "name": "Anthracite Grey",
+          "reference": "C00706650801000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 568678438,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 568678439,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 568678440,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 568678441,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 568678435,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 568678436,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 568678437,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": false
+        },
+        {
+          "id": "052",
+          "hexCode": "#C5C5BF",
+          "productId": 551275789,
+          "name": "Light beige",
+          "reference": "C00706650052000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 551253799,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 551253801,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 551253803,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 551253805,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 551253807,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 551253810,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 551253813,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "250",
+          "hexCode": "#E6E6DF",
+          "productId": 545470288,
+          "name": "White",
+          "reference": "C00706650250000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "out_of_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 545466468,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 545466469,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 545466470,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 545466471,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 545466472,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 545466473,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 545466474,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "422",
+          "hexCode": "#242524",
+          "productId": 545470292,
+          "name": "Dark navy",
+          "reference": "C00706650422000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 545466618,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 545466620,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 545466622,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 545466624,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 545466625,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 545466626,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 545466627,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "716",
+          "hexCode": "#373027",
+          "productId": 565238282,
+          "name": "Dark brown",
+          "reference": "C00706650716000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 565233093,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 565233096,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 565233099,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 565233102,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 565233104,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 565233106,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 565233108,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "736",
+          "hexCode": "#827466",
+          "productId": 545470300,
+          "name": "Light mink",
+          "reference": "C00706650736000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 545466600,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 545466601,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 545466602,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 545466603,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 545466604,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 545466606,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 545466608,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "800",
+          "hexCode": "#242524",
+          "productId": 545470296,
+          "name": "Black",
+          "reference": "C00706650800000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 545466605,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 545466422,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 545466423,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 545466424,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 545466425,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 545466426,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 545466428,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "802",
+          "hexCode": "#585A59",
+          "productId": 576924358,
+          "name": "Grey",
+          "reference": "C00706650802000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 576919196,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 576919200,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 576919203,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 576919207,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 576919210,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 576919213,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 576919215,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        },
+        {
+          "id": "804",
+          "hexCode": "#B4B4B4",
+          "productId": 545470303,
+          "name": "Pearl grey",
+          "reference": "C00706650804000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 36,
+              "name": "36",
+              "availability": "in_stock",
+              "equivalentSizeId": 36,
+              "price": 259000,
+              "sku": 545466563,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 38,
+              "name": "38",
+              "availability": "in_stock",
+              "equivalentSizeId": 38,
+              "price": 259000,
+              "sku": 545466566,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 40,
+              "name": "40",
+              "availability": "in_stock",
+              "equivalentSizeId": 40,
+              "price": 259000,
+              "sku": 545466570,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 42,
+              "name": "42",
+              "availability": "in_stock",
+              "equivalentSizeId": 42,
+              "price": 259000,
+              "sku": 545466574,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 44,
+              "name": "44",
+              "availability": "in_stock",
+              "equivalentSizeId": 44,
+              "price": 259000,
+              "sku": 545466578,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 46,
+              "name": "46",
+              "availability": "in_stock",
+              "equivalentSizeId": 46,
+              "price": 259000,
+              "sku": 545466581,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 48,
+              "name": "48",
+              "availability": "in_stock",
+              "equivalentSizeId": 48,
+              "price": 259000,
+              "sku": 545466583,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": null
+        }
+      ]
+    },
+    "sectionName": "MAN",
+    "familyName": "PANTALON",
+    "subfamilyName": "B. Pant Resto"
+  },
+  "analyticsData": {
+    "page": {
+      "language": "en",
+      "shop": "EG",
+      "currency": "EGP"
+    }
+  }
+}

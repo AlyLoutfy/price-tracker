@@ -1,4 +1,4 @@
-import type { ProductSnapshot, TrackerConfig } from './types';
+import type { Currency, ProductSnapshot, TrackerConfig } from './types';
 import type { SeenState } from './state';
 import type { TrackOutcome } from './track';
 import { escapeHtml } from './notifier';
@@ -8,17 +8,29 @@ export interface ProductDeps {
   readonly send: (html: string, options?: { preview?: boolean }) => Promise<void>;
 }
 
-const eur = (amount: number) => `${amount.toFixed(2)} EUR`;
+/** "71.99 EUR"; EGP as Zara Egypt shows it, without piastres when there are none: "1,990 EGP". */
+function money(amount: number, currency: Currency): string {
+  if (currency === 'EUR') return `${amount.toFixed(2)} EUR`;
+  const digits = Number.isInteger(amount) ? 0 : 2;
+  return `${amount.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits })} ${currency}`;
+}
+
+/** The watched size, or every size available when the whole colour is watched. */
+function stockLine(product: ProductSnapshot): string {
+  if (!product.sizeLabel) return `In stock: ${escapeHtml((product.sizesInStock ?? []).join(' · '))}`;
+  return `Size EU ${escapeHtml(product.sizeLabel)}${product.width ? ` · ${escapeHtml(product.width)}` : ''} · In stock`;
+}
 
 export function formatDiscountMessage(tracker: TrackerConfig, product: ProductSnapshot, reference: number): string {
   const percent = Math.round((1 - product.price / reference) * 1000) / 10;
+  const price = (amount: number) => money(amount, product.currency);
   return [
     '🏷️ <b>Price Tracker — Discount</b>',
     `<b>${escapeHtml(product.title)}</b>`,
     escapeHtml(product.color),
-    `Size EU ${escapeHtml(product.sizeLabel)}${product.width ? ` · ${escapeHtml(product.width)}` : ''} · In stock`,
-    `<s>${eur(reference)}</s> → <b>${eur(product.price)}</b> (${percent}% off)`,
-    `Save ${eur(Math.round((reference - product.price) * 100) / 100)}`,
+    stockLine(product),
+    `<s>${price(reference)}</s> → <b>${price(product.price)}</b> (${percent}% off)`,
+    `Save ${price(Math.round((reference - product.price) * 100) / 100)}`,
     `<a href="${escapeHtml(tracker.url)}">Open on ${escapeHtml(product.store)}</a>`,
   ].join('\n');
 }
@@ -58,6 +70,8 @@ export async function trackProduct(tracker: TrackerConfig, state: SeenState, dep
       ...(alertedPrice === undefined ? {} : { alertedPrice }),
     },
   };
-  console.log(`✓ ${tracker.id}: ${eur(product.price)} (reference ${eur(reference)}), ${product.inStock ? 'in stock' : 'out of stock'}, ${sent} discount alert(s)`);
+  const sizes = product.sizesInStock?.length ? ` (${product.sizesInStock.join(', ')})` : '';
+  console.log(`✓ ${tracker.id}: ${money(product.price, product.currency)} (reference ${money(reference, product.currency)}), ` +
+    `${product.inStock ? 'in stock' : 'out of stock'}${sizes}, ${sent} discount alert(s)`);
   return { kind: previous ? 'diff' : 'seed', matches: 1, sent, sendFailures };
 }

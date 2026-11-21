@@ -61,9 +61,20 @@ describe('loadState', () => {
         price: 80, referencePrice: 100, currency: 'EUR', inStock: true,
         checkedAt: '2026-10-24T12:00:00Z', alertedPrice: 80,
       } },
+      jumper: { url: 'https://www.zara.com/', keys: ['zara:1'], product: {
+        price: 2590, referencePrice: 2590, currency: 'EGP', inStock: false, checkedAt: '2026-11-21T12:00:00Z',
+      } },
     };
     saveState(path, state);
     expect(loadState(path)).toEqual(state);
+  });
+
+  it('drops a product entry in a currency the tracker does not use', () => {
+    const path = join(mkdtempSync(join(tmpdir(), 'seen-')), 'seen.json');
+    writeFileSync(path, JSON.stringify({ shoe: { url: URL_A, keys: ['x:1'], product: {
+      price: 80, referencePrice: 100, currency: 'USD', inStock: true, checkedAt: '2026-11-21T12:00:00Z',
+    } } }));
+    expect(loadState(path)).toEqual({});
   });
 
   it('drops entries in the old per-site shape instead of mis-reading them', () => {

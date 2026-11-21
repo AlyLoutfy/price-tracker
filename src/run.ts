@@ -8,7 +8,9 @@ import { loadState, pruneState, saveState } from './state';
 import { failureReason, trackLink, type TrackDeps, type TrackOutcome } from './track';
 import { createAsicsCollector } from './asics';
 import { createNikeCollector } from './nike';
+import { createZaraCollector } from './zara';
 import { isNikeProductUrl } from './parsers/nike';
+import { isZaraProductUrl } from './parsers/zara';
 import { trackProduct } from './products';
 
 const STATE_PATH = resolve(dirname(fileURLToPath(import.meta.url)), '..', 'state', 'seen.json');
@@ -31,7 +33,9 @@ async function main(): Promise<void> {
   const outcomes: TrackOutcome[] = [];
   const collectAsics = createAsicsCollector();
   const collectNike = createNikeCollector();
-  const collectProduct = (url: string) => (isNikeProductUrl(url) ? collectNike(url) : collectAsics(url));
+  const collectZara = createZaraCollector();
+  const collectProduct = (url: string) =>
+    isNikeProductUrl(url) ? collectNike(url) : isZaraProductUrl(url) ? collectZara(url) : collectAsics(url);
   try {
     for (const tracker of trackers) {
       outcomes.push(tracker.mode === 'discount'

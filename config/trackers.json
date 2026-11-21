@@ -35,5 +35,33 @@
     "mode": "discount",
     "url": "https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard",
     "referencePrice": 90
+  },
+  {
+    "id": "zara-fruit-of-the-loom-t-shirt",
+    "label": "Zara Fruit of the Loom™ graphic print T-shirt · White",
+    "mode": "discount",
+    "url": "https://www.zara.com/eg/en/fruit-of-the-loom--graphic-t-shirt-p00962331.html?v1=577330775",
+    "referencePrice": 1990
+  },
+  {
+    "id": "zara-embroidered-t-shirt",
+    "label": "Zara regular fit combined embroidery T-shirt · Oyster-white",
+    "mode": "discount",
+    "url": "https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900",
+    "referencePrice": 1690
+  },
+  {
+    "id": "zara-textured-chino-trousers",
+    "label": "Zara comfort textured chino trousers · Anthracite Grey",
+    "mode": "discount",
+    "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298",
+    "referencePrice": 2590
+  },
+  {
+    "id": "zara-argyle-jumper",
+    "label": "Zara brushed-effect argyle jumper · Grey / Blue",
+    "mode": "discount",
+    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390",
+    "referencePrice": 2590
   }
 ]

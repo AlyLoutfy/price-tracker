@@ -51,4 +51,11 @@ describe('loadTrackers', () => {
     expect(() => loadTrackers(configFile([{ ...dunk, url: dunk.url.split('?')[0] }]))).toThrow(/Nike France/);
     expect(() => loadTrackers(configFile([{ ...dunk, url: dunk.url.replace('/fr/', '/us/') }]))).toThrow(/Nike France/);
   });
+
+  it('accepts a Zara Egypt product only with its colour', () => {
+    const jumper = { id: 'jumper', label: 'Jumper', mode: 'discount', referencePrice: 2590,
+      url: 'https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390' };
+    expect(loadTrackers(configFile([jumper]))).toHaveLength(1);
+    expect(() => loadTrackers(configFile([{ ...jumper, url: jumper.url.split('?')[0] }]))).toThrow(/Zara Egypt/);
+  });
 });

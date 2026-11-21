@@ -32,20 +32,25 @@ export interface TrackerFilters {
   readonly minBatteryHealth?: number;
 }
 
-/** The exact colour and size a discount tracker watches, as its store quotes it. */
+export type Currency = 'EUR' | 'EGP';
+
+/** The colour (and size, when the link names one) a discount tracker watches, as its store quotes it. */
 export interface ProductSnapshot {
   readonly key: string;
   readonly title: string;
   readonly price: number;
-  readonly currency: 'EUR';
+  readonly currency: Currency;
+  /** The watched size is available, or (for a whole-colour watch) any size is. */
   readonly inStock: boolean;
   readonly color: string;
-  /** The size as the tracked link gives it. */
-  readonly size: string;
+  /** The size as the tracked link gives it; absent when the whole colour is watched (Zara). */
+  readonly size?: string;
   /** The EU size shown to shoppers, e.g. "42.5". */
-  readonly sizeLabel: string;
+  readonly sizeLabel?: string;
   /** Only for stores that sell several widths (ASICS). */
   readonly width?: string;
+  /** For a whole-colour watch: the sizes available now. */
+  readonly sizesInStock?: readonly string[];
   /** Where the alert's link opens, e.g. "ASICS France". */
   readonly store: string;
 }
@@ -57,9 +62,9 @@ export interface TrackerConfig {
   readonly url: string;
   /** A disabled watch keeps its history but makes no requests or sends. */
   readonly enabled?: boolean;
-  /** Omitted for Dubizzle searches; discount watches the exact ASICS or Nike product variant. */
+  /** Omitted for Dubizzle searches; discount watches one ASICS, Nike or Zara product colour. */
   readonly mode?: 'listings' | 'discount';
-  /** Starting full price, in EUR, for a discount tracker. */
+  /** Starting full price of a discount tracker, in the store's currency (EUR, or EGP for Zara Egypt). */
   readonly referencePrice?: number;
   readonly filters?: TrackerFilters;
   /**

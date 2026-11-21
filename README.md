@@ -1,9 +1,10 @@
 # Price Tracker
 
 [Price Tracker](https://github.com/AlyLoutfy/price-tracker) watches Dubizzle Egypt searches for new
-matching ads, and ASICS France and Nike France products for discounts. Alerts go to **Telegram**.
-Dubizzle alerts include a market-price comparison; discount alerts show the old price, new price and
-saving in EUR. It runs hourly on **GitHub Actions**, with no server or paid reader service.
+matching ads, and ASICS France, Nike France and Zara Egypt products for discounts. Alerts go to
+**Telegram**. Dubizzle alerts include a market-price comparison; discount alerts show the old
+price, new price and saving in the store's currency. It checks about hourly on **GitHub Actions**,
+with no server or paid reader service.
 
 Currently tracking:
 
@@ -13,9 +14,15 @@ Currently tracking:
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
+| Zara Fruit of the Loom™ graphic print T-shirt · White | [00962331](https://www.zara.com/eg/en/fruit-of-the-loom--graphic-t-shirt-p00962331.html?v1=577330775) | Any size; alert below 1,990 EGP, when a size is in stock |
+| Zara regular fit combined embroidery T-shirt · Oyster-white | [00962334](https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900) | Any size; alert below 1,690 EGP, when a size is in stock |
+| Zara comfort textured chino trousers · Anthracite Grey | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298) | Any size; alert below 2,590 EGP, when a size is in stock |
+| Zara brushed-effect argyle jumper · Grey / Blue | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Any size; alert below 2,590 EGP, when a size is in stock |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
-ASICS France. Each colour/size/width combination is checked separately.
+ASICS France. Each colour/size/width combination is checked separately. Zara reference prices are
+the full prices on 21 November 2026; a Zara link names a colour but no size, so the alert lists the
+sizes in stock.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
@@ -66,7 +73,7 @@ GitHub Actions cron (hourly)
   their state are still saved, and every tracker is retried next hour. ASICS success cannot hide a
   failed Dubizzle search. Individual failed messages are also retried.
 
-## ASICS and Nike discount alerts
+## ASICS, Nike and Zara discount alerts
 
 ASICS blocks plain product-page requests. The tracker uses the same public Salesforce Shopper
 Products API as the ASICS storefront, with an anonymous guest session. No personal ASICS account,
@@ -75,6 +82,10 @@ API secret, browser installation or paid subscription is needed. Guest tokens li
 Nike France products are read from Nike's public product feed (`api.nike.com/product_feed`), which
 returns a colour's price, sizes and stock in one response, with no account or API key. Nike prices
 a colour as a whole; stock is checked for the EU size in your link.
+
+Zara Egypt products are read from the JSON Zara's own site loads for a product page (the page link
+with `?ajax=true`): every colour's EGP price and the stock of each size, with no account or API
+key. The colour is the link's `v1`; any size in stock counts, and the alert lists them.
 
 - The price and stock must match the product code, colour, size and (for ASICS) width in your
   link. A sale on another colour or size does not trigger an alert.
@@ -135,9 +146,10 @@ npm start                # first run sends one digest per link; later runs alert
 2. **Settings → Secrets and variables → Actions → New repository secret**, add
    `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Those are the only secrets the workflow needs.
 3. **Settings → Actions → General → Workflow permissions** → enable **Read and write permissions**
-   (so the job can commit `state/seen.json` back).
-4. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) runs hourly. You
-   can also trigger it from the **Actions** tab (**Run workflow**). Select **test_telegram** to
+   (so the job can commit `state/` back).
+4. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) checks about
+   hourly (see the cron caveats below). You can also trigger it from the **Actions** tab
+   (**Run workflow**); a manual run always checks. Select **test_telegram** to
    send only a connection test (**test_message** optionally replaces its text); leave it unchecked
    for a normal tracking run. Tests and typechecking run before either action.
 
@@ -194,13 +206,26 @@ own links carry no size, and its site ignores the parameter:
 }
 ```
 
+For a Zara Egypt product, copy the product link (the cart's own parameters can go) and set its full
+price in EGP:
+
+```json
+{
+  "id": "zara-argyle-jumper",
+  "label": "Zara brushed-effect argyle jumper · Grey / Blue",
+  "mode": "discount",
+  "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390",
+  "referencePrice": 2590
+}
+```
+
 Listing filters, customs tax and market comparison options do not apply to discount trackers.
 Editing a product URL or reference price resets its sale comparison.
 
 ## Limitations & maintenance
 
-- **Supported sites.** Dubizzle Egypt searches, and ASICS France and Nike France product links.
-  Other sites and locales are rejected at startup.
+- **Supported sites.** Dubizzle Egypt searches, and ASICS France, Nike France and Zara Egypt
+  product links. Other sites and locales are rejected at startup.
 - **Dubizzle challenges.** HTTP 503 or a challenge-only HTTP 200 triggers the browser fallback.
   A page is accepted only when it contains actual listing data or explicitly reports zero results.
   An unfinished challenge leaves the previous seen history intact.
@@ -212,9 +237,12 @@ Editing a product URL or reference price resets its sale comparison.
 - **A site can start blocking us.** Browser loading can also fail if Dubizzle changes its checks
   or has an outage. An unreadable link fails the job after the other trackers have been checked;
   it is retried next hour without losing history.
-- **GitHub cron caveats.** Scheduled runs can be delayed or skipped under load, worst at the top of
-  the hour, so the job runs at :23. GitHub also auto-disables schedules after ~60 days of no repo
-  activity (the state commits keep it active).
+- **GitHub cron caveats.** GitHub delays or skips many scheduled runs: an hourly schedule ran only
+  about every 6–7 hours in Oct–Nov 2026. So the workflow is offered a start every 5 minutes, and
+  its `due` job lets one through only when `state/last-check.txt` is 55+ minutes old. Checks stay
+  about hourly, a failing run is retried hourly too, and skipped starts finish in seconds without
+  a commit. Still best-effort: gaps can be longer when GitHub is busy. GitHub also auto-disables
+  schedules after ~60 days of no repo activity (the state commits keep it active).
 
 ## Project layout
 
@@ -224,9 +252,11 @@ src/
   run.ts                 entry point: runs every tracker, saves state, fails the job on an outage
   asics.ts               anonymous guest session and live ASICS product API
   nike.ts                Nike's public product feed, France, one colour per request
-  products.ts            discount comparison, EUR alert formatting and delivery bookkeeping
+  zara.ts                the product-page JSON Zara Egypt's site loads, one colour per request
+  products.ts            discount comparison, EUR/EGP alert formatting and delivery bookkeeping
   parsers/asics.ts       exact colour/size/width quote and stock parsing
   parsers/nike.ts        colour price and EU-size stock from the Nike feed
+  parsers/zara.ts        colour price (minor units) and the sizes in stock
   test-telegram.ts       send a single Telegram connection test (or your own text)
   track.ts               one link per run: fetch → filter → reconcile → notify → record what's handled
   sources.ts             site registry; fetches every result page; rejects broken/challenge pages
@@ -242,6 +272,7 @@ src/
   notifier.ts            Telegram message formatting (alerts + first-run digest)
   telegram.ts            Telegram Bot API call
 state/seen.json          tracking state, committed by the Action
+state/last-check.txt     when the last check started; scheduled runs wait 55 minutes after it
 test/                    unit + parser tests (fixtures modelled on live pages)
 .github/workflows/       the scheduled cron job
 ```
