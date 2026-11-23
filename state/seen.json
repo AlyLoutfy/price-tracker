@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:19.763Z"
+      "checkedAt": "2026-11-23T04:06:22.607Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:20.360Z"
+      "checkedAt": "2026-11-23T04:06:23.094Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,7 +60,7 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:20.829Z",
+      "checkedAt": "2026-11-23T04:06:23.454Z",
       "alertedPrice": 63
     }
   },
@@ -74,7 +74,7 @@
       "referencePrice": 1990,
       "currency": "EGP",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:21.292Z"
+      "checkedAt": "2026-11-23T04:06:23.705Z"
     }
   },
   "zara-embroidered-t-shirt": {
@@ -87,7 +87,7 @@
       "referencePrice": 1690,
       "currency": "EGP",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:21.553Z"
+      "checkedAt": "2026-11-23T04:06:23.927Z"
     }
   },
   "zara-textured-chino-trousers": {
@@ -100,7 +100,7 @@
       "referencePrice": 2590,
       "currency": "EGP",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:21.806Z"
+      "checkedAt": "2026-11-23T04:06:24.203Z"
     }
   },
   "zara-argyle-jumper": {
@@ -113,7 +113,7 @@
       "referencePrice": 2590,
       "currency": "EGP",
       "inStock": true,
-      "checkedAt": "2026-11-22T23:46:22.116Z"
+      "checkedAt": "2026-11-23T04:06:24.453Z"
     }
   }
 }
