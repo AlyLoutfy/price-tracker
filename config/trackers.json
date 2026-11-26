@@ -63,5 +63,17 @@
     "mode": "discount",
     "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390",
     "referencePrice": 2590
+  },
+  {
+    "id": "zara-chinos-light-beige-38",
+    "label": "Zara comfort textured chino trousers · Light beige · 38",
+    "mode": "stock",
+    "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789&size=38"
+  },
+  {
+    "id": "zara-argyle-jumper-m",
+    "label": "Zara brushed-effect argyle jumper · Grey / Blue · M",
+    "mode": "stock",
+    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390&size=M"
   }
 ]

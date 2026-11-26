@@ -5,8 +5,11 @@ import { z } from 'zod';
 import { siteFor } from './sources';
 import { isAsicsProductUrl } from './parsers/asics';
 import { isNikeProductUrl } from './parsers/nike';
-import { isZaraProductUrl } from './parsers/zara';
+import { isZaraProductUrl, zaraSize } from './parsers/zara';
 import type { TrackerConfig } from './types';
+
+const isProductUrl = (url: string) =>
+  [isAsicsProductUrl, isNikeProductUrl, isZaraProductUrl].some((isProduct) => isProduct(url));
 
 const trackerSchema = z
   .object({
@@ -14,7 +17,7 @@ const trackerSchema = z
     label: z.string().min(1),
     url: z.string().url(),
     enabled: z.boolean().optional(),
-    mode: z.enum(['listings', 'discount']).optional(),
+    mode: z.enum(['listings', 'discount', 'stock']).optional(),
     referencePrice: z.number().positive().optional(),
     filters: z
       .object({
@@ -32,15 +35,20 @@ const trackerSchema = z
   // Reject unknown keys: a typo ("minBateryHealth") fails loudly instead of silently not filtering.
   .strict()
   .superRefine((tracker, ctx) => {
-    if (tracker.mode === 'discount') {
-      if (![isAsicsProductUrl, isNikeProductUrl, isZaraProductUrl].some((isProduct) => isProduct(tracker.url))) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'discount tracking requires an ASICS France product URL with size and width, a Nike France product URL with an EU size (?size=43), or a Zara Egypt product URL with its colour (?v1=)' });
+    if (tracker.mode === 'discount' || tracker.mode === 'stock') {
+      if (!isProductUrl(tracker.url)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: `${tracker.mode} tracking requires an ASICS France product URL with size and width, a Nike France product URL with an EU size (?size=43), or a Zara Egypt product URL with its colour (?v1=)` });
+      } else if (tracker.mode === 'stock' && isZaraProductUrl(tracker.url) && zaraSize(tracker.url) === undefined) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['url'], message: 'stock tracking watches one size: add it to the Zara link as Zara names it, e.g. &size=38 or &size=M' });
       }
-      if (tracker.referencePrice === undefined) {
+      if (tracker.mode === 'discount' && tracker.referencePrice === undefined) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: "discount tracking requires a starting referencePrice in the store's currency" });
       }
+      if (tracker.mode === 'stock' && tracker.referencePrice !== undefined) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['referencePrice'], message: 'a stock watch alerts at any price; referencePrice is for discount mode' });
+      }
       if (tracker.filters || tracker.phoneTaxEgp !== undefined || tracker.compareBy || tracker.details) {
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'listing filters and market options do not apply to discount trackers' });
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: `listing filters and market options do not apply to ${tracker.mode} trackers` });
       }
     } else {
       try { siteFor(tracker.url); }

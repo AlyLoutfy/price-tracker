@@ -12,6 +12,7 @@ export interface TrackerState {
    */
   readonly offers?: Record<string, string>;
   readonly product?: ProductState;
+  readonly stock?: StockState;
 }
 
 export interface ProductState {
@@ -22,6 +23,16 @@ export interface ProductState {
   readonly checkedAt: string;
   /** Lowest price successfully alerted in the current sale; reset when the sale ends. */
   readonly alertedPrice?: number;
+}
+
+/** What a stock watch remembers about its size. */
+export interface StockState {
+  readonly inStock: boolean;
+  readonly price: number;
+  readonly currency: Currency;
+  readonly checkedAt: string;
+  /** The alert for this restock was delivered; cleared when the size sells out again. */
+  readonly alerted: boolean;
 }
 
 /** seen.json shape: { [trackerId]: { url, keys, offers } } */
@@ -38,7 +49,11 @@ function isTrackerState(value: unknown): value is TrackerState {
     (product.currency === 'EUR' || product.currency === 'EGP') &&
     typeof product.inStock === 'boolean' && typeof product.checkedAt === 'string' &&
     (product.alertedPrice === undefined || positive(product.alertedPrice)));
-  return typeof entry?.url === 'string' && Array.isArray(entry.keys) && offersOk && productOk;
+  const stock = entry?.stock;
+  const stockOk = stock === undefined || (stock !== null && typeof stock === 'object' &&
+    positive(stock.price) && (stock.currency === 'EUR' || stock.currency === 'EGP') &&
+    typeof stock.inStock === 'boolean' && typeof stock.checkedAt === 'string' && typeof stock.alerted === 'boolean');
+  return typeof entry?.url === 'string' && Array.isArray(entry.keys) && offersOk && productOk && stockOk;
 }
 
 /**

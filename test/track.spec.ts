@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { getSeen, type SeenState } from '../src/state';
-import { failureReason, trackLink, type TrackDeps, type TrackOutcome } from '../src/track';
+import { describeError, failureReason, trackLink, type TrackDeps, type TrackOutcome } from '../src/track';
 import type { Listing, TrackerConfig } from '../src/types';
 
 const URL_A = 'https://www.dubizzle.com.eg/en/a/';
@@ -176,5 +176,14 @@ describe('failureReason', () => {
 
   it('fails when every message failed to send', () => {
     expect(failureReason([outcome({ sendFailures: 2 }), outcome({})])).toMatch(/Telegram/);
+  });
+});
+
+describe('describeError', () => {
+  it('adds the network cause Node hides behind "fetch failed"', () => {
+    const error = new TypeError('fetch failed', { cause: new Error('getaddrinfo ENOTFOUND www.zara.com') });
+    expect(describeError(error)).toBe('fetch failed (getaddrinfo ENOTFOUND www.zara.com)');
+    expect(describeError(new Error('Zara product request failed: HTTP 403'))).toBe('Zara product request failed: HTTP 403');
+    expect(describeError('timeout')).toBe('timeout');
   });
 });

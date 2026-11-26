@@ -20,6 +20,15 @@ export interface TrackOutcome {
   readonly sendFailures: number;
   /** New ads not alerted because they repeat an offer already seen (a repost). */
   readonly reposts?: number;
+  /** Why the link couldn't be read, when it `failed`. */
+  readonly error?: string;
+}
+
+/** An error's message, with the network cause Node's fetch hides behind a bare "fetch failed". */
+export function describeError(error: unknown): string {
+  const message = error instanceof Error ? error.message : String(error);
+  const cause = error instanceof Error && error.cause instanceof Error ? error.cause.message : undefined;
+  return cause && !message.includes(cause) ? `${message} (${cause})` : message;
 }
 
 /** Keep the first match of each offer, so a repost doesn't show up twice in one message. */
@@ -47,8 +56,9 @@ export async function trackLink(
     matches = applyFilters(await deps.collect(tracker.url), tracker);
   } catch (error) {
     // Fetch/parse/validation failure: leave this tracker's state untouched and retry next run.
-    console.warn(`⚠️  ${tracker.id}: ${(error as Error).message}`);
-    return { kind: 'failed', matches: 0, sent: 0, sendFailures: 0 };
+    const message = describeError(error);
+    console.warn(`⚠️  ${tracker.id}: ${message}`);
+    return { kind: 'failed', matches: 0, sent: 0, sendFailures: 0, error: message };
   }
 
   const currentKeys = matches.map((match) => match.listing.key);

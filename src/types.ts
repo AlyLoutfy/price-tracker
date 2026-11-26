@@ -34,23 +34,32 @@ export interface TrackerFilters {
 
 export type Currency = 'EUR' | 'EGP';
 
-/** The colour (and size, when the link names one) a discount tracker watches, as its store quotes it. */
+/** The colour (and size, when the link names one) a product tracker watches, as its store quotes it. */
 export interface ProductSnapshot {
   readonly key: string;
   readonly title: string;
   readonly price: number;
   readonly currency: Currency;
+  /** The store's own crossed-out full price, when it shows one (Zara during a sale). */
+  readonly oldPrice?: number;
   /** The watched size is available, or (for a whole-colour watch) any size is. */
   readonly inStock: boolean;
+  /** The store says only a few of the watched size are left (Zara). */
+  readonly lowStock?: boolean;
   readonly color: string;
-  /** The size as the tracked link gives it; absent when the whole colour is watched (Zara). */
+  /**
+   * The watched size as the tracked link gives it (Zara: as Zara names it, e.g. "M"); absent when
+   * the whole colour is watched.
+   */
   readonly size?: string;
-  /** The EU size shown to shoppers, e.g. "42.5". */
+  /** The EU size shown to shoppers, e.g. "42.5" (ASICS, Nike); Zara's sizes have no EU label. */
   readonly sizeLabel?: string;
   /** Only for stores that sell several widths (ASICS). */
   readonly width?: string;
-  /** For a whole-colour watch: the sizes available now. */
+  /** The sizes of the colour available now (Zara). */
   readonly sizesInStock?: readonly string[];
+  /** The product page alerts open, when it isn't the tracked link itself. */
+  readonly pageUrl?: string;
   /** Where the alert's link opens, e.g. "ASICS France". */
   readonly store: string;
 }
@@ -62,8 +71,11 @@ export interface TrackerConfig {
   readonly url: string;
   /** A disabled watch keeps its history but makes no requests or sends. */
   readonly enabled?: boolean;
-  /** Omitted for Dubizzle searches; discount watches one ASICS, Nike or Zara product colour. */
-  readonly mode?: 'listings' | 'discount';
+  /**
+   * Omitted for Dubizzle searches. `discount` watches one ASICS, Nike or Zara product colour for a
+   * sale; `stock` watches one size of one for coming back in stock, at any price.
+   */
+  readonly mode?: 'listings' | 'discount' | 'stock';
   /** Starting full price of a discount tracker, in the store's currency (EUR, or EGP for Zara Egypt). */
   readonly referencePrice?: number;
   readonly filters?: TrackerFilters;

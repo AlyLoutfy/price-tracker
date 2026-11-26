@@ -56,6 +56,18 @@ describe('loadTrackers', () => {
     const jumper = { id: 'jumper', label: 'Jumper', mode: 'discount', referencePrice: 2590,
       url: 'https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390' };
     expect(loadTrackers(configFile([jumper]))).toHaveLength(1);
+    expect(loadTrackers(configFile([{ ...jumper, url: `${jumper.url}&size=M` }]))).toHaveLength(1);
     expect(() => loadTrackers(configFile([{ ...jumper, url: jumper.url.split('?')[0] }]))).toThrow(/Zara Egypt/);
+  });
+
+  it('accepts a stock watch for one size of a product, at any price', () => {
+    const chinos = { id: 'chinos', label: 'Chinos', mode: 'stock',
+      url: 'https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789&size=38' };
+    const shoe = 'https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard';
+    expect(loadTrackers(configFile([chinos, { ...chinos, id: 'shoe', url: shoe }]))).toHaveLength(2);
+    expect(() => loadTrackers(configFile([{ ...chinos, url: chinos.url.replace('&size=38', '') }]))).toThrow(/one size/);
+    expect(() => loadTrackers(configFile([{ ...chinos, referencePrice: 2590 }]))).toThrow(/any price/);
+    expect(() => loadTrackers(configFile([{ ...chinos, url: tracker.url }]))).toThrow(/stock tracking requires/);
+    expect(() => loadTrackers(configFile([{ ...chinos, details: ['Year'] }]))).toThrow(/stock trackers/);
   });
 });

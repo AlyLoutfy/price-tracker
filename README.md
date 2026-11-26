@@ -1,10 +1,11 @@
 # Price Tracker
 
 [Price Tracker](https://github.com/AlyLoutfy/price-tracker) watches Dubizzle Egypt searches for new
-matching ads, and ASICS France, Nike France and Zara Egypt products for discounts. Alerts go to
-**Telegram**. Dubizzle alerts include a market-price comparison; discount alerts show the old
-price, new price and saving in the store's currency. It checks about hourly on **GitHub Actions**,
-with no server or paid reader service.
+matching ads, and ASICS France, Nike France and Zara Egypt products for discounts or for one size
+coming back in stock. Alerts go to **Telegram**, and so does anything that stops a watch working.
+Dubizzle alerts include a market-price comparison; discount alerts show the old price, new price
+and saving in the store's currency. It checks about every 30 minutes on **GitHub Actions**, with
+no server or paid reader service.
 
 Currently tracking:
 
@@ -18,11 +19,14 @@ Currently tracking:
 | Zara regular fit combined embroidery T-shirt · Oyster-white | [00962334](https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900) | Any size; alert below 1,690 EGP, when a size is in stock |
 | Zara comfort textured chino trousers · Anthracite Grey | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298) | Any size; alert below 2,590 EGP, when a size is in stock |
 | Zara brushed-effect argyle jumper · Grey / Blue | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Any size; alert below 2,590 EGP, when a size is in stock |
+| Zara comfort textured chino trousers · Light beige · 38 | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789) | Size 38; alert when it is back in stock, at any price |
+| Zara brushed-effect argyle jumper · Grey / Blue · M | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Size M; alert when it is back in stock, at any price |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
 ASICS France. Each colour/size/width combination is checked separately. Zara reference prices are
-the full prices on 21 November 2026; a Zara link names a colour but no size, so the alert lists the
-sizes in stock.
+the full prices on 21 November 2026; those Zara links name a colour but no size, so the alert lists
+the sizes in stock. Both stock watches started on 26 November 2026 with their size sold out, the
+Light beige chinos reduced to 1,550 EGP for Black Friday.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
@@ -33,7 +37,7 @@ The experimental backend credential was not deployed or saved in GitHub Actions.
 ## Dubizzle listing alerts
 
 ```
-GitHub Actions cron (hourly)
+GitHub Actions (every 30 min)
         │
         ▼
   fetch every page  ──►  parse ads  ──►  filter + read  ──►  diff against state/seen.json
@@ -69,11 +73,12 @@ GitHub Actions cron (hourly)
   untouched, retried next run) instead of being mistaken for "zero ads". If a whole page suddenly
   looks new (state loss, a parser recovering after a site redesign), it's re-recorded silently.
 - **Loud on a real outage.** If any tracked link remains unreadable after the browser fallback,
-  or every Telegram message fails, the run fails and GitHub can notify you. Successful alerts and
-  their state are still saved, and every tracker is retried next hour. ASICS success cannot hide a
+  or every Telegram message fails, the run fails, and Telegram tells you which link and why (see
+  [Problems reach Telegram too](#problems-reach-telegram-too)). Successful alerts and their state
+  are still saved, and every tracker is retried at the next check. ASICS success cannot hide a
   failed Dubizzle search. Individual failed messages are also retried.
 
-## ASICS, Nike and Zara discount alerts
+## ASICS, Nike and Zara product alerts
 
 ASICS blocks plain product-page requests. The tracker uses the same public Salesforce Shopper
 Products API as the ASICS storefront, with an anonymous guest session. No personal ASICS account,
@@ -85,7 +90,11 @@ a colour as a whole; stock is checked for the EU size in your link.
 
 Zara Egypt products are read from the JSON Zara's own site loads for a product page (the page link
 with `?ajax=true`): every colour's EGP price and the stock of each size, with no account or API
-key. The colour is the link's `v1`; any size in stock counts, and the alert lists them.
+key. The colour is the link's `v1`. Add `&size=38` (the size as Zara names it: `38`, `M`, `XL`…) to
+watch one size; without it, any size in stock counts and the alert lists them. Alerts open Zara's
+link without the added `size`.
+
+**Discount watches** (`"mode": "discount"`):
 
 - The price and stock must match the product code, colour, size and (for ASICS) width in your
   link. A sale on another colour or size does not trigger an alert.
@@ -99,6 +108,31 @@ key. The colour is the link's `v1`; any size in stock counts, and the alert list
 - Only public product prices are checked; checkout-only codes, shipping and member-only offers are
   not included. The initial full price is explicit in configuration, so a first-fetch error cannot
   silently establish a wrong baseline.
+
+**Stock watches** (`"mode": "stock"`) follow one size of one colour and alert when it can be bought,
+at any price:
+
+- A new watch sends one message: the alert itself if the size is available, otherwise a "Now
+  watching" note with the price and the other sizes in stock, so you know it is running.
+- Then one alert per restock: nothing while the size stays in stock or after it sells out again,
+  and a new alert the next time it comes back. A failed Telegram delivery is retried next check.
+- The alert shows the price, with Zara's crossed-out full price during a sale, and "Only a few
+  left" when Zara says the size is low on stock.
+- A size the colour does not come in fails loudly ("no size XXL in Grey / Blue; it comes in S, M,
+  L, XL") instead of passing for sold out, and reaches Telegram like any other problem.
+
+## Problems reach Telegram too
+
+- **When something breaks, you hear once.** A watch that cannot be read (blocked, product gone,
+  page changed), a crash or an invalid config, or a workflow step that fails before the check
+  (installing, tests): one message names the watch and the error, with a link to the run log.
+- **While it lasts, a reminder every 12 hours; when it is fixed, "working again".** Each check
+  sends at most one such message, and an undelivered one is retried at the next check.
+  `state/health.json` records what is broken and what you were told.
+- **Late checks are mentioned.** A check that comes 2+ hours after the previous one, because GitHub
+  did not start the ones between, says so, at most once a day.
+- **Telegram itself.** If Telegram fails or its secrets are missing, the run fails and GitHub shows
+  it. A state push that fails after its retries also sends a plain Telegram message.
 
 ## The market comparison
 
@@ -140,18 +174,24 @@ cp .env.example .env     # then fill in the two values
 npm start                # first run sends one digest per link; later runs alert on new ads
 ```
 
-## 3. Deploy on GitHub Actions (the cron job)
+## 3. Deploy on GitHub Actions
 
 1. Push this repo to GitHub.
 2. **Settings → Secrets and variables → Actions → New repository secret**, add
    `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`. Those are the only secrets the workflow needs.
 3. **Settings → Actions → General → Workflow permissions** → enable **Read and write permissions**
    (so the job can commit `state/` back).
-4. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) checks about
-   hourly (see the cron caveats below). You can also trigger it from the **Actions** tab
-   (**Run workflow**); a manual run always checks. Select **test_telegram** to
-   send only a connection test (**test_message** optionally replaces its text); leave it unchecked
-   for a normal tracking run. Tests and typechecking run before either action.
+4. **Settings → Environments → New environment**, name it `check-interval`, tick **Wait timer**,
+   enter `30` and save the protection rules. Each check queues the next one through this
+   environment, and its timer spaces them 30 minutes apart; waiting uses no runner and is not
+   billed. Without it, checks fall back to GitHub's own schedule, every few hours, and a daily
+   Telegram note says checks are late.
+5. The workflow [`.github/workflows/tracker.yml`](.github/workflows/tracker.yml) then checks about
+   every 30 minutes (see the schedule notes below). You can also trigger it from the **Actions** tab
+   (**Run workflow**); a manual run always checks, and starts the 30-minute cycle if it has
+   stopped. Select **test_telegram** to send only a connection test (**test_message** optionally
+   replaces its text); leave it unchecked for a normal tracking run, and leave **queued**
+   unchecked: checks set it for the next one. Tests and typechecking run before either action.
 
 ## 4. Track a link
 
@@ -219,8 +259,22 @@ price in EGP:
 }
 ```
 
-Listing filters, customs tax and market comparison options do not apply to discount trackers.
-Editing a product URL or reference price resets its sale comparison.
+To hear when one size is back in stock, at any price, use `"mode": "stock"` with a link that names
+the size. ASICS and Nike links already do (above); for Zara, add `&size=` with the size as Zara
+shows it:
+
+```json
+{
+  "id": "zara-argyle-jumper-m",
+  "label": "Zara brushed-effect argyle jumper · Grey / Blue · M",
+  "mode": "stock",
+  "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390&size=M"
+}
+```
+
+Listing filters, customs tax and market comparison options do not apply to discount or stock
+trackers, and a stock watch takes no `referencePrice`. Editing a product URL (or a discount's
+reference price) starts that watch afresh.
 
 ## Limitations & maintenance
 
@@ -236,13 +290,20 @@ Editing a product URL or reference price resets its sale comparison.
   `npm run dry-run` to see what each link currently returns.
 - **A site can start blocking us.** Browser loading can also fail if Dubizzle changes its checks
   or has an outage. An unreadable link fails the job after the other trackers have been checked;
-  it is retried next hour without losing history.
-- **GitHub cron caveats.** GitHub delays or skips many scheduled runs: an hourly schedule ran only
-  about every 6–7 hours in Oct–Nov 2026. So the workflow is offered a start every 5 minutes, and
-  its `due` job lets one through only when `state/last-check.txt` is 55+ minutes old. Checks stay
-  about hourly, a failing run is retried hourly too, and skipped starts finish in seconds without
-  a commit. Still best-effort: gaps can be longer when GitHub is busy. GitHub also auto-disables
-  schedules after ~60 days of no repo activity (the state commits keep it active).
+  it is retried at the next check without losing history.
+- **Every 30 minutes, best-effort.** GitHub starts few scheduled runs: in Oct–Nov 2026 an hourly
+  schedule, and then one offered every 5 minutes, both ran only every 4–11 hours. So each check
+  queues the next one itself (`workflow_dispatch`), held 30 minutes by the `check-interval`
+  environment's wait timer. The schedule stays as a backstop that restarts this chain if a queued
+  run is ever lost. The `due` job lets a scheduled or queued start through only when
+  `state/last-check.txt` is 25+ minutes old, so a second chain dies out within one cycle and a
+  turned-away start takes seconds. Only runs on the default branch queue the next check. GitHub
+  also auto-disables schedules after ~60 days of no repo activity (the state commits keep it
+  active).
+- **Actions minutes.** A check takes about half a minute of runner time, plus half a minute for
+  Chromium while a Dubizzle search is enabled (it is skipped otherwise). That is free because the
+  repository is public. In a private repository, ~48 checks a day would bill about 4,500 minutes
+  a month (each job rounds up to a minute), over GitHub Free's 2,000.
 
 ## Project layout
 
@@ -253,10 +314,12 @@ src/
   asics.ts               anonymous guest session and live ASICS product API
   nike.ts                Nike's public product feed, France, one colour per request
   zara.ts                the product-page JSON Zara Egypt's site loads, one colour per request
-  products.ts            discount comparison, EUR/EGP alert formatting and delivery bookkeeping
+  products.ts            discount and stock watches: comparison, EUR/EGP alerts, delivery bookkeeping
   parsers/asics.ts       exact colour/size/width quote and stock parsing
   parsers/nike.ts        colour price and EU-size stock from the Nike feed
-  parsers/zara.ts        colour price (minor units) and the sizes in stock
+  parsers/zara.ts        colour price (minor units), sale price, the sizes in stock or one size's
+  health.ts              problems for Telegram: when to report, remind and say fixed; late checks
+  report-failure.ts      reports a failed workflow step (install, tests) the same way
   test-telegram.ts       send a single Telegram connection test (or your own text)
   track.ts               one link per run: fetch → filter → reconcile → notify → record what's handled
   sources.ts             site registry; fetches every result page; rejects broken/challenge pages
@@ -272,7 +335,8 @@ src/
   notifier.ts            Telegram message formatting (alerts + first-run digest)
   telegram.ts            Telegram Bot API call
 state/seen.json          tracking state, committed by the Action
-state/last-check.txt     when the last check started; scheduled runs wait 55 minutes after it
+state/health.json        open problems, what you were told about them and when; the last check
+state/last-check.txt     when the last check started; scheduled and queued runs wait 25 minutes after it
 test/                    unit + parser tests (fixtures modelled on live pages)
-.github/workflows/       the scheduled cron job
+.github/workflows/       the check, which queues the next one; the schedule restarts it if needed
 ```

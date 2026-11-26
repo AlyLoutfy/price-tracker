@@ -1,11 +1,16 @@
 import type { ProductSnapshot } from '../types';
 
-/** A Zara Egypt product link; its `v1` parameter names the colour. Every size of it is watched. */
+/**
+ * A Zara Egypt product link; its `v1` parameter names the colour. Every size of it is watched,
+ * unless you add the one to watch as `&size=38` (Zara's own size name: 38, M, XL…).
+ */
 export function isZaraProductUrl(value: string): boolean {
   try {
     const url = new URL(value);
+    const size = url.searchParams.get('size');
     return url.protocol === 'https:' && ['www.zara.com', 'zara.com'].includes(url.hostname) &&
-      /^\/eg\/en\/[^/]+-p\d{8}\.html$/.test(url.pathname) && /^\d+$/.test(url.searchParams.get('v1') ?? '');
+      /^\/eg\/en\/[^/]+-p\d{8}\.html$/.test(url.pathname) && /^\d+$/.test(url.searchParams.get('v1') ?? '') &&
+      (size === null || size.trim() !== '');
   } catch { return false; }
 }
 
@@ -13,6 +18,12 @@ export function isZaraProductUrl(value: string): boolean {
 export function zaraColorId(sourceUrl: string): number {
   if (!isZaraProductUrl(sourceUrl)) throw new Error('Zara: unsupported product URL');
   return Number(new URL(sourceUrl).searchParams.get('v1'));
+}
+
+/** The one size the link watches (`&size=M`), or undefined when it watches the whole colour. */
+export function zaraSize(sourceUrl: string): string | undefined {
+  if (!isZaraProductUrl(sourceUrl)) throw new Error('Zara: unsupported product URL');
+  return new URL(sourceUrl).searchParams.get('size')?.trim() || undefined;
 }
 
 type JsonObject = Record<string, unknown>;
@@ -37,19 +48,35 @@ export function parseZaraProduct(data: unknown, sourceUrl: string): ProductSnaps
   if (currency.code !== 'EGP' || typeof currency.exponent !== 'number' || currency.exponent > 0) {
     throw new Error('Zara: missing EGP price');
   }
-  const price = typeof pricing.value === 'number' && color.priceUnavailable !== true
-    ? pricing.value / 10 ** -currency.exponent : NaN;
+  const exponent = currency.exponent;
+  const egp = (minor: unknown) => (typeof minor === 'number' ? Math.round(minor / 10 ** -exponent * 100) / 100 : NaN);
+  const price = color.priceUnavailable !== true ? egp(pricing.value) : NaN;
   if (!Number.isFinite(price) || price <= 0) throw new Error('Zara: missing/invalid EGP price');
+  // During a sale Zara shows the full price crossed out next to the reduced one.
+  const oldPrice = egp(color.oldPrice);
   const sizes = objects(color.sizes);
   if (!sizes.length || sizes.some((size) => typeof size.availability !== 'string')) {
     throw new Error('Zara: unknown stock status');
   }
-  const sizesInStock = sizes
-    .filter((size) => typeof size.availability === 'string' && BUYABLE.has(size.availability))
-    .map((size) => String(size.name));
-  return {
+  const name = (size: JsonObject) => String(size.name);
+  const buyable = (size: JsonObject) => BUYABLE.has(size.availability as string);
+  const colorName = text(color.name) ?? String(colorId);
+  const snapshot: ProductSnapshot = {
     key: `zara:${colorId}`, title: text(product.name) ?? `Zara ${colorId}`,
-    price: Math.round(price * 100) / 100, currency: 'EGP', inStock: sizesInStock.length > 0,
-    color: text(color.name) ?? String(colorId), sizesInStock, store: 'Zara Egypt',
+    price, currency: 'EGP', inStock: sizes.some(buyable),
+    color: colorName, sizesInStock: sizes.filter(buyable).map(name), store: 'Zara Egypt',
+    ...(oldPrice > price ? { oldPrice } : {}),
+  };
+  const wanted = zaraSize(sourceUrl);
+  if (wanted === undefined) return snapshot;
+  const size = sizes.find((entry) => name(entry).trim().toUpperCase() === wanted.toUpperCase());
+  if (!size) throw new Error(`Zara: no size ${wanted} in ${colorName}; it comes in ${sizes.map(name).join(', ')}`);
+  // Open Zara's own link in alerts: the size parameter is ours, not the site's.
+  const page = new URL(sourceUrl);
+  page.searchParams.delete('size');
+  return {
+    ...snapshot, key: `zara:${colorId}:${String(size.sku ?? name(size))}`, size: name(size),
+    inStock: buyable(size), ...(size.availability === 'low_on_stock' ? { lowStock: true } : {}),
+    pageUrl: page.toString(),
   };
 }

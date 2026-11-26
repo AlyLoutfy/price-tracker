@@ -2,10 +2,9 @@ name: Price Tracker
 
 on:
   schedule:
-    # GitHub starts only some scheduled runs: an hourly schedule ran about every 6–7 hours in
-    # Oct–Nov 2026. So a start is offered every 5 minutes, and the `due` job lets one through only
-    # when the last check is 55+ minutes old: checks stay about hourly, and a skipped start takes
-    # seconds. Fetches go straight to the sites, nothing metered. Still best-effort.
+    # Only a backstop. GitHub starts few scheduled runs: every 4–11 hours in Nov 2026, though offered
+    # a start every 5 minutes. So each check queues the next one itself (see `due`), 30 minutes on.
+    # A start here restarts that chain if it ever breaks; while it runs, `due` turns these away.
     - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
@@ -17,20 +16,36 @@ on:
         description: Text for the Telegram test, replacing the default (Telegram HTML)
         type: string
         required: false
-
-# Prevent overlapping runs from racing on the committed state file.
-concurrency:
-  group: price-tracker
-  cancel-in-progress: false
+      queued:
+        description: Queued by the previous check, to run 30 minutes after it (leave unchecked)
+        type: boolean
+        default: false
 
 permissions:
-  contents: write # needed to commit state/ back to the repo
+  contents: read
 
 jobs:
+  wait:
+    # Holds a queued check for the wait timer of the `check-interval` environment (30 minutes, set
+    # in Settings → Environments). Waiting takes no runner and is not billed.
+    if: ${{ inputs.queued }}
+    runs-on: ubuntu-latest
+    environment: check-interval
+    timeout-minutes: 5
+    steps:
+      - run: echo "Waited for the check-interval timer."
+
   due:
-    # A manual run always checks; a scheduled one only when the last check is 55+ minutes old.
+    # A manual run always checks; a scheduled or queued one only when the last check is 25+ minutes
+    # old. Only a run that checks queues the next one, so a second chain (a scheduled start that got
+    # through, a manual run) dies out within one cycle.
+    needs: wait
+    if: ${{ !cancelled() && needs.wait.result != 'failure' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: write # to queue the next check
     outputs:
       check: ${{ steps.due.outputs.check }}
     steps:
@@ -38,22 +53,47 @@ jobs:
         with:
           ref: ${{ github.ref }}
       - id: due
+        env:
+          QUEUED: ${{ inputs.queued }}
         run: |
           last=$(cat state/last-check.txt 2>/dev/null || true)
           check=true
-          if [[ "$GITHUB_EVENT_NAME" == schedule && -n "$last" ]]; then
+          if [[ ( "$GITHUB_EVENT_NAME" == schedule || "$QUEUED" == true ) && -n "$last" ]]; then
             age=$(( $(date +%s) - $(date -d "$last" +%s 2>/dev/null || echo 0) ))
-            if (( age < 55 * 60 )); then check=false; fi
+            if (( age < 25 * 60 )); then check=false; fi
           fi
           echo "Last check: ${last:-never}. Checking now: $check"
           echo "check=$check" >> "$GITHUB_OUTPUT"
+      - name: Queue the next check
+        # Before this check runs, so a failing one is retried in 30 minutes too. Only on the default
+        # branch: a test run elsewhere must not start a second tracker with its own state. (Scheduled
+        # runs are always on it, and their event carries no repository to compare with.)
+        if: >-
+          ${{ steps.due.outputs.check == 'true' && !inputs.test_telegram && (github.event_name == 'schedule'
+          || github.ref_name == github.event.repository.default_branch) }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in 1 2 3; do
+            gh workflow run tracker.yml --repo "$GITHUB_REPOSITORY" --ref "$GITHUB_REF_NAME" -f queued=true && exit 0
+            sleep $((attempt * 10))
+          done
+          echo "::warning::Could not queue the next check; the schedule will start one later."
 
   check:
     needs: due
-    if: ${{ needs.due.outputs.check == 'true' }}
+    if: ${{ !cancelled() && needs.due.result == 'success' && needs.due.outputs.check == 'true' }}
     runs-on: ubuntu-latest
     # Every network call has its own timeout; this is only a backstop against a hung runner.
     timeout-minutes: 30
+    permissions:
+      contents: write # to commit state/ back to the repo
+    # Checks share state/, so they never overlap. A queued run waiting for its timer is not one yet.
+    concurrency:
+      group: price-tracker
+      cancel-in-progress: false
+    env:
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - uses: actions/checkout@v5
         with:
@@ -64,7 +104,7 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Record this check
-        # First, so a failing run counts too: it is retried in an hour, not every 5 minutes.
+        # First, so a failing run counts too: scheduled starts don't retry it every 5 minutes.
         if: ${{ !inputs.test_telegram }}
         run: date -u +%Y-%m-%dT%H:%M:%SZ > state/last-check.txt
 
@@ -73,16 +113,28 @@ jobs:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      - id: install
+        run: npm ci
 
-      - run: npm run typecheck && npm test
+      - id: tests
+        run: npm run typecheck && npm test
+
+      - name: Find out whether a watch needs Chromium
+        # Only Dubizzle searches do. Installing it takes half of a check, so skip it when none is on.
+        id: needs
+        run: |
+          browser=$(jq 'any(.[]; .enabled != false and (.mode // "listings") == "listings")' config/trackers.json)
+          echo "Chromium needed: $browser"
+          echo "browser=$browser" >> "$GITHUB_OUTPUT"
 
       - name: Install Chromium for Dubizzle
-        if: ${{ !inputs.test_telegram }}
+        id: chromium
+        if: ${{ !inputs.test_telegram && steps.needs.outputs.browser == 'true' }}
         run: npx playwright install --with-deps --no-shell chromium
 
       - name: Verify browser challenge handling
-        if: ${{ !inputs.test_telegram }}
+        id: browser
+        if: ${{ !inputs.test_telegram && steps.needs.outputs.browser == 'true' }}
         run: npm run test:browser
 
       - name: Send Telegram test
@@ -94,18 +146,43 @@ jobs:
           TELEGRAM_TEST_MESSAGE: ${{ inputs.test_message }}
         run: npm run telegram:test
 
-      - name: Check listings and product discounts
+      - name: Check every watch
+        id: track
         if: ${{ !inputs.test_telegram }}
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           BROWSER_HEADLESS: '0'
-        run: xvfb-run --auto-servernum npm start
+          BROWSER: ${{ steps.needs.outputs.browser }}
+        run: |
+          if [[ "$BROWSER" == true ]]; then xvfb-run --auto-servernum npm start; else npm start; fi
+
+      - name: Report a failed step on Telegram
+        # The tracker reports its own problems. This covers the steps before it, through the same
+        # rate-limited state/health.json; if the dependencies never installed, a plain message.
+        if: ${{ failure() && steps.track.outcome != 'failure' && !inputs.test_telegram }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FAILED_STEP: >-
+            ${{ steps.install.outcome == 'failure' && 'Installing dependencies'
+            || steps.tests.outcome == 'failure' && 'Typecheck and tests'
+            || steps.chromium.outcome == 'failure' && 'Installing Chromium'
+            || steps.browser.outcome == 'failure' && 'Browser challenge checks'
+            || 'Setting up the check' }}
+        run: |
+          if [[ -x node_modules/.bin/tsx ]] && node_modules/.bin/tsx src/report-failure.ts; then exit 0; fi
+          curl -sS --fail-with-body -m 30 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=⚠️ Price Tracker: \"${FAILED_STEP}\" failed, so nothing was checked. Run log: ${RUN_URL}"
 
       - name: Persist seen state
         # Also after a failed run: alerts already delivered before the failure are recorded in the
-        # state file, and dropping it would re-send them next hour.
+        # state file, and dropping it would re-send them next time.
         if: ${{ !cancelled() && !inputs.test_telegram }}
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           if [[ -n "$(git status --porcelain state/)" ]]; then
             git config user.name "AlyLoutfy"
@@ -119,6 +196,9 @@ jobs:
               sleep $((attempt * 5))
             done
             echo "Could not push state after 3 attempts" >&2
+            curl -sS -m 30 -o /dev/null "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+              --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+              --data-urlencode "text=⚠️ Price Tracker could not save its state to GitHub, so the next check may repeat this one's alerts. Run log: ${RUN_URL}" || true
             exit 1
           else
             echo "No state changes to persist."

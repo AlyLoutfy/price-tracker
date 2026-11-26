@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from 'vitest';
 import fixture from './fixtures/zara-product.json';
+import jumperFixture from './fixtures/zara-jumper.json';
+import saleFixture from './fixtures/zara-chino-sale.json';
 import { createZaraCollector } from '../src/zara';
-import { isZaraProductUrl, parseZaraProduct } from '../src/parsers/zara';
+import { isZaraProductUrl, parseZaraProduct, zaraSize } from '../src/parsers/zara';
 
 // Captured from the live site on 21 November 2026: nine colours at 2,590 EGP, none on sale.
 const url = 'https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298';
@@ -62,6 +64,54 @@ describe('Zara product parser', () => {
     expect(isZaraProductUrl(url.split('?')[0]!)).toBe(false);
     expect(isZaraProductUrl(url.replace('/eg/en/', '/es/en/'))).toBe(false);
     expect(isZaraProductUrl(url.replace('www.zara.com', 'zara.com.example'))).toBe(false);
+  });
+});
+
+// Captured from the live site on 26 November 2026: the jumper's S and M sold out, L and XL in stock;
+// the chinos' Light beige reduced from 2,590 to 1,550 EGP for Black Friday, every size sold out.
+describe('Zara size watch', () => {
+  const jumper = 'https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390';
+  const beige = 'https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789';
+
+  it('reads only the size named in the link, and opens Zara’s own link in alerts', () => {
+    expect(parseZaraProduct(jumperFixture, `${jumper}&size=M`)).toEqual({
+      key: 'zara:554794390:554779439', title: 'BRUSHED-EFFECT ARGYLE JUMPER', price: 2590, currency: 'EGP',
+      inStock: false, color: 'Grey / Blue', size: 'M', sizesInStock: ['L', 'XL'], store: 'Zara Egypt',
+      pageUrl: jumper,
+    });
+    expect(parseZaraProduct(jumperFixture, `${jumper}&size=L`)).toMatchObject({ size: 'L', inStock: true });
+  });
+
+  it('matches the size as Zara names it, whatever the case or spacing in the link', () => {
+    expect(zaraSize(`${jumper}&size=%20m%20`)).toBe('m');
+    expect(parseZaraProduct(jumperFixture, `${jumper}&size=%20m%20`)).toMatchObject({ size: 'M' });
+    expect(zaraSize(jumper)).toBeUndefined();
+  });
+
+  it('marks a size Zara says is low on stock', () => {
+    const data = structuredClone(jumperFixture);
+    data.product.detail.colors[0]!.sizes[1]!.availability = 'low_on_stock';
+    expect(parseZaraProduct(data, `${jumper}&size=M`)).toMatchObject({ inStock: true, lowStock: true });
+  });
+
+  it('fails loudly for a size the colour does not come in, listing the ones it does', () => {
+    expect(() => parseZaraProduct(jumperFixture, `${jumper}&size=XXL`))
+      .toThrow('Zara: no size XXL in Grey / Blue; it comes in S, M, L, XL');
+    expect(isZaraProductUrl(`${jumper}&size=`)).toBe(false);
+  });
+
+  it('reads a sale price with the crossed-out full price, for the size or the whole colour', () => {
+    expect(parseZaraProduct(saleFixture, `${beige}&size=38`)).toMatchObject({
+      key: 'zara:551275789:551253801', price: 1550, oldPrice: 2590, inStock: false, size: '38', sizesInStock: [],
+    });
+    expect(parseZaraProduct(saleFixture, beige)).toMatchObject({ price: 1550, oldPrice: 2590, inStock: false });
+    expect(parseZaraProduct(saleFixture, beige.replace('551275789', '545470298'))).not.toHaveProperty('oldPrice');
+  });
+
+  it('asks Zara for the colour only: the size is picked from its reply', async () => {
+    const request = vi.fn<typeof fetch>().mockResolvedValue(Response.json(jumperFixture));
+    expect(await createZaraCollector(request)(`${jumper}&size=M`)).toMatchObject({ size: 'M', inStock: false });
+    expect(String(request.mock.calls[0]![0])).toBe(`${jumper}&ajax=true`);
   });
 });
 

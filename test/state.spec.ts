@@ -64,9 +64,20 @@ describe('loadState', () => {
       jumper: { url: 'https://www.zara.com/', keys: ['zara:1'], product: {
         price: 2590, referencePrice: 2590, currency: 'EGP', inStock: false, checkedAt: '2026-11-21T12:00:00Z',
       } },
+      chinos: { url: 'https://www.zara.com/?size=38', keys: ['zara:1:2'], stock: {
+        price: 1550, currency: 'EGP', inStock: true, checkedAt: '2026-11-26T12:00:00Z', alerted: true,
+      } },
     };
     saveState(path, state);
     expect(loadState(path)).toEqual(state);
+  });
+
+  it('drops a stock entry that does not say whether its alert was delivered', () => {
+    const path = join(mkdtempSync(join(tmpdir(), 'seen-')), 'seen.json');
+    writeFileSync(path, JSON.stringify({ chinos: { url: URL_A, keys: ['zara:1:2'], stock: {
+      price: 1550, currency: 'EGP', inStock: true, checkedAt: '2026-11-26T12:00:00Z',
+    } } }));
+    expect(loadState(path)).toEqual({});
   });
 
   it('drops a product entry in a currency the tracker does not use', () => {

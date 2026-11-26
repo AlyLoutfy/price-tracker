@@ -1,0 +1,86 @@
+{
+  "product": {
+    "id": 554779437,
+    "type": "Product",
+    "kind": "Wear",
+    "state": "visible",
+    "brand": {
+      "brandId": 1,
+      "brandGroupId": 1,
+      "brandGroupCode": "zara"
+    },
+    "name": "BRUSHED-EFFECT ARGYLE JUMPER",
+    "detail": {
+      "reference": "05755112-I2026",
+      "displayReference": "5755/112",
+      "colors": [
+        {
+          "id": "055",
+          "hexCode": "#242524",
+          "productId": 554794390,
+          "name": "Grey / Blue",
+          "reference": "C05755112055000-I2026",
+          "price": 259000,
+          "sizes": [
+            {
+              "id": 2,
+              "name": "S",
+              "availability": "out_of_stock",
+              "equivalentSizeId": 102,
+              "price": 259000,
+              "sku": 554779438,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 3,
+              "name": "M",
+              "availability": "out_of_stock",
+              "equivalentSizeId": 103,
+              "price": 259000,
+              "sku": 554779439,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 4,
+              "name": "L",
+              "availability": "in_stock",
+              "equivalentSizeId": 104,
+              "price": 259000,
+              "sku": 554779440,
+              "demand": "DEMAND_REGULAR"
+            },
+            {
+              "id": 5,
+              "name": "XL",
+              "availability": "in_stock",
+              "equivalentSizeId": 105,
+              "price": 259000,
+              "sku": 554779441,
+              "demand": "DEMAND_REGULAR"
+            }
+          ],
+          "pricing": {
+            "price": {
+              "value": 259000,
+              "currency": {
+                "code": "EGP",
+                "exponent": -2
+              }
+            }
+          },
+          "priceUnavailable": false
+        }
+      ]
+    },
+    "sectionName": "WOMAN",
+    "familyName": "JERSEY",
+    "subfamilyName": "PUNTO JERSEY"
+  },
+  "analyticsData": {
+    "page": {
+      "language": "en",
+      "shop": "EG",
+      "currency": "EGP"
+    }
+  }
+}
