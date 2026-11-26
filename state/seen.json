@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T15:42:27.850Z"
+      "checkedAt": "2026-11-26T21:31:21.837Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T15:42:28.484Z"
+      "checkedAt": "2026-11-26T21:31:22.553Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,60 +60,34 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T15:42:29.316Z",
+      "checkedAt": "2026-11-26T21:31:23.278Z",
       "alertedPrice": 63
     }
   },
-  "zara-fruit-of-the-loom-t-shirt": {
-    "url": "https://www.zara.com/eg/en/fruit-of-the-loom--graphic-t-shirt-p00962331.html?v1=577330775",
+  "zara-chinos-light-beige-38": {
+    "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789&size=38",
     "keys": [
-      "zara:577330775"
+      "zara:551275789:551253801"
     ],
-    "product": {
-      "price": 1990,
-      "referencePrice": 1990,
+    "stock": {
+      "inStock": false,
+      "price": 1550,
       "currency": "EGP",
-      "inStock": true,
-      "checkedAt": "2026-11-26T15:42:29.672Z"
+      "checkedAt": "2026-11-26T21:31:24.266Z",
+      "alerted": false
     }
   },
-  "zara-embroidered-t-shirt": {
-    "url": "https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900",
+  "zara-argyle-jumper-m": {
+    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390&size=M",
     "keys": [
-      "zara:549569900"
+      "zara:554794390:554779439"
     ],
-    "product": {
-      "price": 1690,
-      "referencePrice": 1690,
-      "currency": "EGP",
-      "inStock": true,
-      "checkedAt": "2026-11-26T15:42:29.939Z"
-    }
-  },
-  "zara-textured-chino-trousers": {
-    "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298",
-    "keys": [
-      "zara:545470298"
-    ],
-    "product": {
+    "stock": {
+      "inStock": false,
       "price": 2590,
-      "referencePrice": 2590,
       "currency": "EGP",
-      "inStock": true,
-      "checkedAt": "2026-11-26T15:42:30.229Z"
-    }
-  },
-  "zara-argyle-jumper": {
-    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390",
-    "keys": [
-      "zara:554794390"
-    ],
-    "product": {
-      "price": 2590,
-      "referencePrice": 2590,
-      "currency": "EGP",
-      "inStock": true,
-      "checkedAt": "2026-11-26T15:42:30.579Z"
+      "checkedAt": "2026-11-26T21:31:24.766Z",
+      "alerted": false
     }
   }
 }
