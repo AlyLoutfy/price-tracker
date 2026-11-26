@@ -16,12 +16,10 @@ Currently tracking:
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
 | Zara comfort textured chino trousers · Light beige · 38 | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789) | Size 38; alert when it is back in stock, at any price |
-| Zara brushed-effect argyle jumper · Grey / Blue · M | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Size M; alert when it is back in stock, at any price |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
-ASICS France. Each colour/size/width combination is checked separately. Both stock watches
-started on 26 November 2026 with their size sold out, the Light beige chinos reduced to 1,550 EGP
-for Black Friday.
+ASICS France. Each colour/size/width combination is checked separately. The chinos watch started
+on 26 November 2026 with size 38 sold out, reduced to 1,550 EGP for Black Friday.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
@@ -260,10 +258,10 @@ shows it:
 
 ```json
 {
-  "id": "zara-argyle-jumper-m",
-  "label": "Zara brushed-effect argyle jumper · Grey / Blue · M",
+  "id": "zara-chinos-light-beige-38",
+  "label": "Zara comfort textured chino trousers · Light beige · 38",
   "mode": "stock",
-  "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390&size=M"
+  "url": "https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789&size=38"
 }
 ```
 
