@@ -15,18 +15,13 @@ Currently tracking:
 | ASICS GEL-VENTURE 6 · Black/Black | [1203A297-002](https://www.asics.com/fr/fr-fr/gel-venture-6/p/1203A297-002.html?size=9&width=Standard) | EU 42.5, Standard; alert below €100, when in stock |
 | ASICS GEL-CHALLENGER 15 CLAY · Oatmeal/Midnight | [1041A508-250](https://www.asics.com/fr/fr-fr/gel-challenger-15-clay/p/1041A508-250.html?size=9&width=Standard) | EU 42.5, Standard; alert below €120, when in stock |
 | ASICS GEL-EXCITE 11 · Foggy Teal/Ocean Haze | [1011C080-404](https://www.asics.com/fr/fr-fr/gel-excite-11/p/1011C080-404.html?size=9&width=Standard) | EU 42.5, Standard; alert below €90, when in stock |
-| Zara Fruit of the Loom™ graphic print T-shirt · White | [00962331](https://www.zara.com/eg/en/fruit-of-the-loom--graphic-t-shirt-p00962331.html?v1=577330775) | Any size; alert below 1,990 EGP, when a size is in stock |
-| Zara regular fit combined embroidery T-shirt · Oyster-white | [00962334](https://www.zara.com/eg/en/regular-fit-contrast-embroidered-t-shirt-p00962334.html?v1=549569900) | Any size; alert below 1,690 EGP, when a size is in stock |
-| Zara comfort textured chino trousers · Anthracite Grey | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=545470298) | Any size; alert below 2,590 EGP, when a size is in stock |
-| Zara brushed-effect argyle jumper · Grey / Blue | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Any size; alert below 2,590 EGP, when a size is in stock |
 | Zara comfort textured chino trousers · Light beige · 38 | [00706650](https://www.zara.com/eg/en/comfort-textured-chino-trousers-p00706650.html?v1=551275789) | Size 38; alert when it is back in stock, at any price |
 | Zara brushed-effect argyle jumper · Grey / Blue · M | [05755112](https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390) | Size M; alert when it is back in stock, at any price |
 
 ASICS reference prices were checked on 24 October 2026. URL size `9` maps to EU `42.5` on
-ASICS France. Each colour/size/width combination is checked separately. Zara reference prices are
-the full prices on 21 November 2026; those Zara links name a colour but no size, so the alert lists
-the sizes in stock. Both stock watches started on 26 November 2026 with their size sold out, the
-Light beige chinos reduced to 1,550 EGP for Black Friday.
+ASICS France. Each colour/size/width combination is checked separately. Both stock watches
+started on 26 November 2026 with their size sold out, the Light beige chinos reduced to 1,550 EGP
+for Black Friday.
 
 The SEAT Leon watch is disabled (`"enabled": false`), with its history preserved. Dubizzle's
 [Terms of Use](https://help.dubizzle.com.eg/hc/en-us/articles/4405534023823-What-are-Terms-of-Use)
