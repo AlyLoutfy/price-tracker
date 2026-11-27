@@ -34,7 +34,7 @@
       "referencePrice": 100,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T21:33:41.594Z"
+      "checkedAt": "2026-11-27T00:02:59.795Z"
     }
   },
   "asics-gel-challenger-15-clay": {
@@ -47,7 +47,7 @@
       "referencePrice": 120,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T21:33:42.058Z"
+      "checkedAt": "2026-11-27T00:03:00.403Z"
     }
   },
   "asics-gel-excite-11": {
@@ -60,7 +60,7 @@
       "referencePrice": 90,
       "currency": "EUR",
       "inStock": true,
-      "checkedAt": "2026-11-26T21:33:42.576Z",
+      "checkedAt": "2026-11-27T00:03:01.013Z",
       "alertedPrice": 63
     }
   },
@@ -73,21 +73,8 @@
       "inStock": false,
       "price": 1550,
       "currency": "EGP",
-      "checkedAt": "2026-11-26T21:33:42.946Z",
+      "checkedAt": "2026-11-27T00:03:01.442Z",
       "alerted": false
-    }
-  },
-  "zara-argyle-jumper-m": {
-    "url": "https://www.zara.com/eg/en/brushed-effect-argyle-jumper-p05755112.html?v1=554794390&size=M",
-    "keys": [
-      "zara:554794390:554779439"
-    ],
-    "stock": {
-      "inStock": true,
-      "price": 2590,
-      "currency": "EGP",
-      "checkedAt": "2026-11-26T21:33:44.016Z",
-      "alerted": true
     }
   }
 }
